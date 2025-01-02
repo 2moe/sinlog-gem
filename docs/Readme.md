@@ -132,7 +132,7 @@ irb(main):017> Pathname('lib/lambda.rb').tap do
 end
 ```
 
-<img src="../assets/img/LogLambdaExt.jpg" alt="LogLambdaExt" style="width: 70%; height: 70%">
+<img src="../assets/img/LogLambdaExt.jpg" alt="LogLambdaExt" style="width: 90%; height: 90%">
 
 LogLambdaExt provides:
 

@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# -----------------
+# Depends: tree, ruby (>= 3.4.0)
+# Description: Build and show gem contents.
+# -----------------
+
+require 'pathname'
+
+Pathname(__dir__ || File.dirname(__FILE__))
+  .parent
+  .then { Dir.chdir(it) }
+
+project = 'sinlog'
+
+puts `gem uninstall #{project}`
+puts `gem build #{project}`
+puts `gem install #{project}`
+
+tree_cmd = ['tree'] + Dir.glob("#{ENV['GEM_HOME']}/gems/sinlog-*")
+p tree_cmd
+system(*tree_cmd)

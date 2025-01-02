@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# -----------------
+# Description: Include this project and test it in irb(console).
+# -----------------
+
+require 'bundler/setup'
+require 'sinlog'
+require 'irb'
+
+IRB.start(__FILE__)

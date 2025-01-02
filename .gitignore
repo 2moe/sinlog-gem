@@ -1,0 +1,25 @@
+/*
+.bundle/
+.yardoc
+_yardoc/
+coverage/
+# /doc/
+# /pkg/
+/spec/reports/
+tmp
+.DS_Store
+Thumbs.db
+Icon\r
+desktop.ini
+
+# white list
+!/.git*
+!/Gemfile
+!/License
+!/Rakefile
+!/docs
+!/lib
+!/*.gemspec
+!/test
+!/bin
+!/assets

@@ -28,5 +28,5 @@ jobs:
       
       # - name: install deps
       #   run: bundle install
-      - name: Run the default task
-        run: bundle exec rake
+      - name: Ruby MiniTest
+        run: rake test

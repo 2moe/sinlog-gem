@@ -93,7 +93,7 @@ LambdaExt provides:
 #### LogLambdaExt
 
 There is a module very similar to LambdaExt called LogLambdaExt.  
-The main difference between them is the naming of the lambda functions.
+The main difference between them is the naming of the methods.
 
 - LogLambdaExt has a `log_` prefix
 - LambdaExt does not

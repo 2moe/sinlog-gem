@@ -89,8 +89,8 @@ class Sinlog
     end
   end
 
-  # Similar to LogLambdaExt, but the lambda functions do not have the `log_` prefix.
-  # One important thing to note is that LambdaExt defines the `warning` function, not `warn`.
+  # Similar to LogLambdaExt, but the methods do not have the `log_` prefix.
+  # One important thing to note is that LambdaExt defines the `warning` method, not `warn`.
   #
   # The following methods define lambda expressions for different log levels.
   # These lambdas can be used to log messages at the corresponding log level.

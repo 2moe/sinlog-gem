@@ -4,7 +4,7 @@
 
 > 单例（Singleton）意味着整个程序会共享同一个实例（日志记录器）。
 
-[rubydoc](https://www.rubydoc.info/gems/sinlog)
+[![Gem Version](https://badge.fury.io/rb/sinlog.svg?icon=si%3Arubygems)](https://rubygems.org/gems/sinlog)   [![RubyDoc](https://img.shields.io/badge/-y?label=rubydoc&color=orange)](https://www.rubydoc.info/gems/sinlog)
 
 ---
 

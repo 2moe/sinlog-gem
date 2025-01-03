@@ -89,7 +89,7 @@ LambdaExt 提供了:
 #### LogLambdaExt
 
 有一個與 LambdaExt 特別相似的模組，名為 LogLambdaExt。  
-它們之間最主要的區別在於 lambda 函式的名稱。
+它們之間最主要的區別在於方法的名稱。
 
 - LogLambdaExt 帶有 `log_` 字首
 - LambdaExt 沒有

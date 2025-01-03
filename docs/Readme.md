@@ -4,6 +4,8 @@ A very, very simple Ruby singleton logger with colored log levels.
 
 > Singleton means that the entire program will share the same instance (logger).
 
+[rubydoc](https://www.rubydoc.info/gems/sinlog)
+
 ---
 
 | Language/語言                   | ID         |

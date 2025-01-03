@@ -4,6 +4,8 @@
 
 > 單例（Singleton）意味著整個程式會共享同一個例項（日誌記錄器）。
 
+[rubydoc](https://www.rubydoc.info/gems/sinlog)
+
 ---
 
 | Language/語言              | ID         |

@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'singleton'
+require 'logger'
+
 # Logger Singleton Class
 class Sinlog
   include Singleton
@@ -27,9 +30,9 @@ class Sinlog
 
   # Example:
   #
-  #   logger = Sinlog.instance.logger
-  #   logger.info "Information"
-  #   logger.debug "This is a debug message"
+  #     logger = Sinlog.instance.logger
+  #     logger.info "Information"
+  #     logger.debug "This is a debug message"
   #
   # The log output format will be similar to:
   #
@@ -42,7 +45,7 @@ class Sinlog
   # If this variable is not set, the default level is DEBUG.
   def initialize
     @logger = Logger.new($stderr)
-    fetch_env_and_update_log_level
+    set_level_from_env!
     @logger.formatter = proc do |severity, datetime, progname, msg|
       color = COLORS[severity.downcase.to_sym]
       reset = COLORS[:unknown]
@@ -50,6 +53,20 @@ class Sinlog
       prog = format_prog_name(progname)
       "[#{color}#{severity}#{reset}] #{formatted_datetime} #{prog}#{msg}\n"
     end
+  end
+
+  def self.logger
+    instance.logger
+  end
+
+  # Example:
+  #
+  #     require 'sinlog'
+  #     dbg_logger = Sinlog.with_level(Sinlog::LV[:debug])
+  #     dbg_logger.info "This is an info message"
+  #     dbg_logger.debug "This is a debug message"
+  def self.logger_with_level(level = LV[:warn])
+    instance.logger.tap { _1.level = level }
   end
 
   # Set the `@logger.level` (**log level**) based on the value of an environment variable.
@@ -64,13 +81,12 @@ class Sinlog
   #
   # Example:
   #
-  #   ENV["XX_LOG"] = "info" # or setenv in posix-sh: export XX_LOG=info
+  #     ENV["XX_LOG"] = "info" # or setenv in posix-sh: export XX_LOG=info
+  #     logger = Sinlog.instance.tap { it.set_level_from_env!("XX_LOG") }.logger
   #
-  #   logger = Sinlog.instance.tap { it.fetch_env_and_update_log_level("XX_LOG") }.logger
-  #
-  #   logger.debug "This message will not be displayed because the current log level is info"
-  #   logger.info "Hello!"
-  def fetch_env_and_update_log_level(env_name = 'RUBY_LOG')
+  #     logger.debug "This message will not be displayed because the current log level is info"
+  #     logger.info "Hello!"
+  def set_level_from_env!(env_name = 'RUBY_LOG')
     env_lv = ENV[env_name]&.downcase&.to_sym || :debug
 
     (LV[env_lv] || Logger::UNKNOWN)

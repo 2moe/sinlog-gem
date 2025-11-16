@@ -4,7 +4,8 @@
 
 > 单例（Singleton）意味着整个程序会共享同一个实例（日志记录器）。
 
-[![Gem Version](https://badge.fury.io/rb/sinlog.svg?icon=si%3Arubygems)](https://rubygems.org/gems/sinlog)   [![RubyDoc](https://img.shields.io/badge/-y?label=rubydoc&color=orange)](https://www.rubydoc.info/gems/sinlog)
+[![Gem Version](https://badge.fury.io/rb/sinlog.svg?icon=si%3Arubygems)](https://rubygems.org/gems/sinlog)
+<!-- [![RubyDoc](https://img.shields.io/badge/-y?label=rubydoc&color=orange)](https://www.rubydoc.info/gems/sinlog) -->
 
 ---
 
@@ -21,10 +22,17 @@
 目录（点击展开）
 </summary>
 
+- [快速上手](#快速上手)
+- [安装](#安装)
+  - [对比](#对比)
+  - [方法列表](#方法列表)
+    - [Loggable \& LogExt](#loggable--logext)
+    - [LogShortExt](#logshortext)
+  - [例子](#例子)
+    - [经典方法调用 (非 mixin，亦非 refinement)](#经典方法调用-非-mixin亦非-refinement)
+    - [Mixin](#mixin)
+    - [Refinement](#refinement)
 - [Learn Sinlog API By Example](#learn-sinlog-api-by-example)
-  - [include module](#include-module)
-    - [LambdaExt](#lambdaext)
-    - [LogLambdaExt](#loglambdaext)
   - [Classic Method Call](#classic-method-call)
 - [进阶](#进阶)
   - [Real World Example](#real-world-example)
@@ -38,133 +46,135 @@
 
 </details>
 
-## Learn Sinlog API By Example
+## 快速上手
 
-首先，安装 sinlog。
+## 安装
 
 ```sh
+# POSIX-sh
+#
 gem install sinlog
 ```
 
-然后，我们可以运行 `irb` 来快速体验一番。
+### 对比
 
-### include module
+| 模块        | 类型       | 方法                                         |
+| ----------- | ---------- | -------------------------------------------- |
+| Loggable    | Mixin      | `log_dbg`, `log_info`, etc.                  |
+| LogExt      | Refinement | `log_dbg`, `log_info`, etc.                  |
+| LogShortExt | Refinement | `dbg`, `info`, `warn`, `err`, `fatal`, `unk` |
 
-#### LambdaExt
 
-当出现： `irb(main):001>` 后，我们就能开始操作了。
+### 方法列表
+
+#### Loggable & LogExt
+
+- `log_dbg`   – DEBUG
+- `log_info`  – INFO
+- `log_warn`  – WARN
+- `log_err`   – ERROR
+- `log_fatal` – FATAL
+- `log_unk`   – UNKNOWN
+
+#### LogShortExt
+
+LogShortExt 类似于 LogExt。
+
+除了方法的命名不同外，二者的内部实现没有任何区别。
+
+- LogExt 的方法带有 `log_` 前缀
+- LogShortExt 没有
+
+---
+
+- `dbg`   – DEBUG
+- `info`  – INFO
+- `warn`  – WARN
+- `err`   – ERROR
+- `fatal` – FATAL
+- `unk`   – UNKNOWN
+
+> ⚠️ 由于 LogShortExt 带有 warn 方法，因此会覆盖 warn。
+> 对于 ruby 代码中的 `warn "msg"`，您可能需要手动将其修改为 `Kernel.warn "msg"`
+>
+> 如果介意的话，那就使用 `using Sinlog::LogExt` 而不是 `using Sinlog::LogShortExt`。
+
+### 例子
+
+#### 经典方法调用 (非 mixin，亦非 refinement)
 
 ```ruby
-irb(main):001> require 'sinlog'
+require 'sinlog'
 
-irb(main):002> include Sinlog::LambdaExt
-# 它提供了: dbg, info, warning, err, fatal, unk
-# 我们可以用 .tap(&dbg) 或 .then(&dbg) 来调用。
-
-irb(main):003> 'debug'.tap(&dbg)
-irb(main):004> 'information'.tap(&info)
-
-# 注：创建 warn 方法，会导致 irb 的补全功能出问题。
-#   因此 LambdaExt 用的是 warning, 而不是 warn。
-#   您如果确实需要 warn，那就调用 include Sinlog::LambdaWarnExt
-irb(main):005> 'warning'.tap(&warning)
-
-irb(main):006> 'error'.tap(&err)
-irb(main):007> 'fatal'.tap(&fatal)
-irb(main):008> 'unknown'.tap(&unk)
+log = Sinlog.logger
+log.info "Information"
+log.debug "This is a debug message"
 ```
 
-<img src="../assets/img/LambdaExt.jpg" alt="LambdaExt" style="width: 50%; height: 50%">
-
-LambdaExt 提供了:
-
-- dbg
-- info
-- warning
-- wng (与 warning 相同，只是名称不同)
-- err
-- fatal
-- unk
-
-#### LogLambdaExt
-
-有一个与 LambdaExt 特别相似的模块，名为 LogLambdaExt。  
-它们之间最主要的区别在于方法的名称。
-
-- LogLambdaExt 带有 `log_` 前缀
-- LambdaExt 没有
-
-LambdaExt 与 LogLambdaExt 可以同时 include, 不过在一般情况下，我们引入其中一个就够用了。
-
-至于哪一个更好呢？
-
-我们不妨亲自上手试试，了解其中的区别，最后挑一个自己喜欢的。
+#### Mixin
 
 ```ruby
-irb(main):009> include Sinlog::LogLambdaExt
-# 它提供了 log_dbg, log_info, log_warn, log_err, log_fatal, log_unk
-# 我们可以用 .tap(&log_dbg) 或 .then(&log_dbg) 来调用。
+require 'sinlog'
+include Sinlog::Loggable
+"Hello".log_info
+```
+#### Refinement
 
-irb(main):010> "debug".tap(&log_dbg)
-irb(main):011> "information".tap(&log_info)
-
-# 注：这里用的是 log_warn，而不是 log_warning
-irb(main):012> "warning".tap(&log_warn)
-
-irb(main):013> "error".tap(&log_err)
-irb(main):014> "fatal".tap(&log_fatal)
-irb(main):015> "unknown".tap(&log_unk)
+```ruby
+require 'sinlog'
+using Sinlog::LogExt
+{ dir: "/path/to/xx" }.log_info
 ```
 
-```ruby
-# 这是一个更复杂的例子
-irb(main):016> require 'pathname'
+## Learn Sinlog API By Example
 
-irb(main):017> Pathname('lib/lambda.rb').tap do
-    "Filename: #{it}".then(&log_info)
-    "size: #{
-      it
-        .tap{ '⚠️ 获取文件大小可能会失败'.then(&log_warn) }
-        .size
-    }".then(&log_info)
+<img src="../assets/img/预览.png" alt="预览">
+
+```ruby
+require 'sinlog'
+
+class A
+  using Sinlog::LogShortExt
+
+  def self.log
+    '您好，我是一条调试消息。
+    您可能会觉得我有点啰嗦，哈哈哈！'.dbg
+    '神经，害我笑了一下'.info
+
+    '开门！查水表。'.warn
+    { error: "IO", type: "输入数据无效" }.err
+    '不行啦！出错了，继续运行下去会坏掉的。'.err
+    '滋滋滋，已经坏..掉...了..了~'.fatal
+  end
 end
+
+Sinlog::LV[:info].then do
+  Sinlog.logger_with_level it
+end
+
+A.log
 ```
-
-<img src="../assets/img/LogLambdaExt.jpg" alt="LogLambdaExt" style="width: 90%; height: 90%">
-
-LogLambdaExt 提供了:
-
-- log_dbg
-- log_info
-- log_warn
-- log_warning (与 log_warn 相同，只是名称不同)
-- log_wng (与 log_warn 相同，只是名称不同)
-- log_err
-- log_fatal
-- log_unk
 
 ### Classic Method Call
 
-您如果不喜欢 lambda，那就试试经典的方法调用吧！
-
-先运行 irb 进入 ruby repl，接着一步一步运行。
+您如果不喜欢 `msg.info` 这种做法 ，那不妨试试经典的方法调用吧！(i.e., `log.info(msg)`)
 
 ```ruby
-irb(main):001> require 'sinlog'
+require 'sinlog'
 
-irb(main):002> log = Sinlog.instance.logger
+log = Sinlog.logger
 
-irb(main):003> log.debug 'debug'
-irb(main):004> log.info 'information'
-irb(main):005> log.warn 'warning'
-irb(main):006> log.error 'error'
-irb(main):007> log.fatal 'fatal'
-irb(main):008> log.unknown 'unknown'
+log.debug 'debug'
+log.info 'information'
+log.warn 'warning'
+log.error 'error'
+log.fatal 'fatal'
+log.unknown 'unknown'
 ```
 
-Sinlog.instance.logger 提供了 ruby 标准库的 logger 的方法。
+> `Sinlog.logger` 的数据类型为 ruby 标准库的 Logger。
 
-最常见的有：
+除了以下这些常见的方法外，您还可以使用 `.reopen` 等其他的方法，详见 <https://docs.ruby-lang.org.cn/en/3.4/Logger.html>
 
 - debug
 - info
@@ -175,7 +185,7 @@ Sinlog.instance.logger 提供了 ruby 标准库的 logger 的方法。
 
 ## 进阶
 
-在亲自上手尝试之后，我们已经对 sinlog 有了初步的了解。  
+在亲自上手尝试之后，我们已经对 sinlog 有了初步的了解。
 在一般情况下，了解其基本用法就已经足够了。
 
 您如果对此感兴趣的话，不妨与我一同继续探索。
@@ -190,9 +200,8 @@ require 'sinlog'
 class EpubProcessor
   def initialize(epub_file, logger = nil)
     @epub = epub_file
-    @logger = logger || Sinlog.instance.tap { it.fetch_env_and_update_log_level("XX_LOG") }.logger
+    @logger = logger || Sinlog.instance.tap { it.set_level_from_env!("XX_LOG") }.logger
     @logger.debug "EpubProcessor class 初始化完成。"
-
   end
 end
 ```
@@ -219,9 +228,12 @@ p Sinlog::LV
 # => {debug: 0, info: 1, warn: 2, error: 3, fatal: 4, unknown: 5}
 
 # 将日志级别修改为 warn
-log = Sinlog.instance.logger.tap {it.level = Sinlog::LV[:warn]}
-# 或者是：
-# log = Sinlog.instance.logger.tap {it.level = 2}
+log = Sinlog.logger_with_level(Sinlog::LV[:warn])
+# OR:
+#   log = Sinlog.logger.tap { it.level = Sinlog::LV[:warn] }
+# OR:
+#   log = Sinlog.instance.logger.tap { it.level = 2 }
+
 
 log.error "这条消息会显示出来！低级别 WARN（2）会显示高级别 ERROR(3) 的日志。"
 log.info "这条消息不会显示出来！高级别 WARN(2) 不会显示低级别 INFO(1) 的日志。"
@@ -233,14 +245,14 @@ log.info "这条消息不会显示出来！高级别 WARN(2) 不会显示低级�
 
 ### 环境变量
 
-在现实世界中，对于客户端应用，最后运行程序的是普通用户。  
+在现实世界中，对于客户端应用，最后运行程序的是普通用户。
 为了能让普通用户直接配置 log.level，我们可以通过环境变量来配置。
 
 > 使用环境变量足够简单也足够高效。
 
 Sinlog 在默认情况下，会尝试读取环境变量 RUBY_LOG 的值。
 
-本质上调用了 `fetch_env_and_update_log_level(env_name = 'RUBY_LOG')` 函数。
+本质上调用了 `set_level_from_env!(env_name = 'RUBY_LOG')` 函数。
 
 - 若该环境变量不存在，则使用 debug(0)。
 - 若该环境变量存在，且其值为空，则使用 unknown(5)。
@@ -264,7 +276,7 @@ export XX_CLI_LOG=info
 ruby:
 
 ```ruby
-logger = Sinlog.instance.tap { it.fetch_env_and_update_log_level("XX_CLI_LOG") }.logger
+logger = Sinlog.instance.tap { it.set_level_from_env!("XX_CLI_LOG") }.logger
 
 logger.debug "由于当前日志级别为 INFO(1)，因此不会显示此消息 DEBUG(0)。"
 logger.info "Hello!"
@@ -278,7 +290,7 @@ logger.info "Hello!"
 
 ```ruby
 # 日志会输出到 a.log 文件
-log = Sinlog.instance.logger.tap {it.reopen("a.log")}
+log = Sinlog.logger.tap {it.reopen("a.log")}
 
 log.error "发生甚么事了！QuQ"
 ```
@@ -286,7 +298,7 @@ log.error "发生甚么事了！QuQ"
 OR:
 
 ```ruby
-log = Sinlog.instance.logger
+log = Sinlog.logger
 log.reopen("a.log")
 
 log.error "发生甚么事了！QuQ"
@@ -294,7 +306,7 @@ log.error "发生甚么事了！QuQ"
 
 ### 其他 logger 方法
 
-除了 `.reopen`, `.level` 外，我们还可以在 `Sinlog.instance.logger` 上调用 ruby 标准库的 logger 的其他方法。
+除了 `.reopen`, `.level` 外，我们还可以在 `Sinlog.logger` 上调用 ruby 标准库的 logger 的其他方法。
 
 ### 注意事项
 
@@ -304,7 +316,7 @@ Sinlog 用的是 Singleton 单例模式，整个程序会共享同一个实例�
 
 ## 题外话
 
-这是我发布的第一个 ruby gem。  
+这是我发布的第一个 ruby gem。
 其中的 api 不一定符合地道的 ruby 用法，还请大家多多谅解。
 
 ## License

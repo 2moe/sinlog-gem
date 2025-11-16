@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = 'A very, very simple singleton logger with colored log levels.'
   spec.license = 'MIT'
   # spec.extra_rdoc_files = ['docs/rdoc/Readme.rdoc']
-  spec.required_ruby_version = '>= 3.0.0'
+  spec.required_ruby_version = '>= 3.1.0'
   # spec.metadata['allowed_push_host'] = "TODO: Set to your gem server 'https://example.com'"
 
   spec.homepage = 'https://github.com/2moe/sinlog-gem'

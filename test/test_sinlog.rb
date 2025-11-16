@@ -11,8 +11,14 @@ class TestSinlog < Minitest::Test
   # end
 
   def test_show_debug_msg
-    Sinlog.instance.logger.debug 'This is a debug message'
-    Kernel.include Sinlog::LogLambdaExt
-    'msg2'.tap(&log_dbg)
+    Sinlog.logger.debug 'This is a debug message'
+  end
+end
+
+class TestRF < Minitest::Test
+  using Sinlog::LogShortExt
+
+  def test_info_message
+    'Hello'.info
   end
 end

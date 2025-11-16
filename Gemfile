@@ -1,27 +1,32 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 # Specify your gem's dependencies in sinlog.gemspec
 gemspec
 
 group :test do
-  gem 'minitest', '~> 5.25'
-  gem 'rake', '~> 13.2'
+  gem 'minitest'
+  gem 'rake'
 end
 
 group :console do
-  gem 'irb', '~> 1.14'
-  gem 'rdoc', '~> 6.10'
+  gem 'irb'
+  gem 'rdoc'
 end
 
 group :development do
-  gem 'rubocop', '~> 1.69'
-  gem 'rubocop-packaging', '~> 0.5.2'
-  gem 'rubocop-performance', '~> 1.23'
-  gem 'rubocop-rspec', '~> 3.3'
-  gem 'rubocop-shopify', '~> 2.15'
-  gem 'rubocop-thread_safety', '~> 0.6.0'
-  gem 'ruby-lsp', '~> 0.22.1'
-  gem 'ruby_parser', '~> 3.21'
-  gem 'sorbet', '~> 0.5.11709'
-  gem 'sorbet-runtime', '~> 0.5.11710'
+  gem 'erb', '~> 6.0'
+  gem 'rubocop'
+  gem 'rubocop-packaging'
+  gem 'rubocop-performance'
+  gem 'rubocop-rspec'
+  gem 'rubocop-shopify'
+  gem 'rubocop-thread_safety'
+  gem 'ruby-lsp'
+  gem 'ruby_parser'
+  gem 'sorbet'
+  gem 'sorbet-runtime'
+  gem 'tapioca', '~> 0.17.9'
 end
+

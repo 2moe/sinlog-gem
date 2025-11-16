@@ -1,20 +1,21 @@
 /*
-.bundle/
-.yardoc
-_yardoc/
-coverage/
-# /doc/
-# /pkg/
-/spec/reports/
 tmp
+tmp.*
+
+.directory
+.thumbnails*
 .DS_Store
-Thumbs.db
-Icon\r
+._.DS_Store
 desktop.ini
+Thumbs.db
+Thumbs.db:encryptable
+
+bin/tapioca
 
 # white list
 !/.git*
 !/Gemfile
+!/Gemfile.lock
 !/License
 !/Rakefile
 !/docs
@@ -23,3 +24,4 @@ desktop.ini
 !/test
 !/bin
 !/assets
+!/rbi

@@ -4,7 +4,8 @@ A very, very simple Ruby singleton logger with colored log levels.
 
 > Singleton means that the entire program will share the same instance (logger).
 
-[![Gem Version](https://badge.fury.io/rb/sinlog.svg?icon=si%3Arubygems)](https://rubygems.org/gems/sinlog)   [![RubyDoc](https://img.shields.io/badge/-y?label=rubydoc&color=orange)](https://www.rubydoc.info/gems/sinlog)
+[![Gem Version](https://badge.fury.io/rb/sinlog.svg?icon=si%3Arubygems)](https://rubygems.org/gems/sinlog)
+<!-- [![RubyDoc](https://img.shields.io/badge/-y?label=rubydoc&color=orange)](https://www.rubydoc.info/gems/sinlog) -->
 
 ---
 
@@ -14,10 +15,6 @@ A very, very simple Ruby singleton logger with colored log levels.
 | [简体中文](./Readme-zh.md)      | zh-Hans-CN |
 | [繁體中文](./Readme-zh-Hant.md) | zh-Hant-TW |
 
-> Want to support Mehr Sprachen/Más idiomas/Autres langues/Другие языки/...?
->
-> Please feel free to send me an issue!
-
 ---
 
 <details>
@@ -25,10 +22,17 @@ A very, very simple Ruby singleton logger with colored log levels.
 Table of Contents (click to expand)
 </summary>
 
-- [Learn Sinlog API By Example](#learn-sinlog-api-by-example)
-  - [include module](#include-module)
-    - [LambdaExt](#lambdaext)
-    - [LogLambdaExt](#loglambdaext)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+  - [Comparison](#comparison)
+  - [Method List](#method-list)
+    - [Loggable \& LogExt](#loggable--logext)
+    - [LogShortExt](#logshortext)
+  - [Examples](#examples)
+    - [Classic Method Call (Neither Mixin nor Refinement)](#classic-method-call-neither-mixin-nor-refinement)
+    - [Mixin](#mixin)
+    - [Refinement](#refinement)
+- [Learn Sinlog API by Example](#learn-sinlog-api-by-example)
   - [Classic Method Call](#classic-method-call)
 - [Advanced](#advanced)
   - [Real World Example](#real-world-example)
@@ -38,148 +42,150 @@ Table of Contents (click to expand)
   - [Other Logger Methods](#other-logger-methods)
   - [Notes](#notes)
 - [Side Note](#side-note)
+- [Changelog](#changelog)
+  - [0.0.3](#003)
 - [License](#license)
 
 </details>
 
-## Learn Sinlog API By Example
+## Quick Start
 
-First, install `sinlog`.
+## Installation
 
 ```sh
+# POSIX-sh
+#
 gem install sinlog
 ```
 
-Then, we can run `irb` to quickly try it out.
+### Comparison
 
-### include module
+| Module      | Type       | Methods                                      |
+| ----------- | ---------- | -------------------------------------------- |
+| Loggable    | Mixin      | `log_dbg`, `log_info`, etc.                  |
+| LogExt      | Refinement | `log_dbg`, `log_info`, etc.                  |
+| LogShortExt | Refinement | `dbg`, `info`, `warn`, `err`, `fatal`, `unk` |
 
-#### LambdaExt
+### Method List
 
-When you see: `irb(main):001>`, we can start operating.
+#### Loggable & LogExt
+
+*   `log_dbg`   – DEBUG
+*   `log_info`  – INFO
+*   `log_warn`  – WARN
+*   `log_err`   – ERROR
+*   `log_fatal` – FATAL
+*   `log_unk`   – UNKNOWN
+
+#### LogShortExt
+
+`LogShortExt` works the same way as `LogExt`, except for method naming:
+
+  - `LogExt` methods use the `log_` prefix.
+  - `LogShortExt` methods do not.
+
+---
+
+- `dbg`   – DEBUG
+- `info`  – INFO
+- `warn`  – WARN
+- `err`   – ERROR
+- `fatal` – FATAL
+- `unk`   – UNKNOWN
+
+> ⚠️ Note: `LogShortExt` defines a `warn` method, which overrides Ruby’s built-in `warn`.
+> If you need to call the original `warn "msg"`, use `Kernel.warn "msg"` instead.
+>
+> If this is a concern, use `using Sinlog::LogExt` instead of `using Sinlog::LogShortExt`.
+
+### Examples
+
+#### Classic Method Call (Neither Mixin nor Refinement)
 
 ```ruby
-irb(main):001> require 'sinlog'
+require 'sinlog'
 
-irb(main):002> include Sinlog::LambdaExt
-# It provides: dbg, info, warning, err, fatal, unk
-# We can call them using .tap(&dbg) or .then(&dbg).
-
-irb(main):003> 'debug'.tap(&dbg)
-irb(main):004> 'information'.tap(&info)
-
-# Note: Creating a warn method will cause issues with irb's auto-completion.
-# Therefore, LambdaExt uses warning instead of warn.
-# If you really need warn, then call include Sinlog::LambdaWarnExt
-irb(main):005> 'warning'.tap(&warning)
-
-irb(main):006> 'error'.tap(&err)
-irb(main):007> 'fatal'.tap(&fatal)
-irb(main):008> 'unknown'.tap(&unk)
+log = Sinlog.logger
+log.info "Information"
+log.debug "This is a debug message"
 ```
 
-<img src="../assets/img/LambdaExt.jpg" alt="LambdaExt" style="width: 50%; height: 50%">
-
-LambdaExt provides:
-
-- dbg
-- info
-- warning
-- wng (same as warning, just a different name)
-- err
-- fatal
-- unk
-
-#### LogLambdaExt
-
-There is a module very similar to LambdaExt called LogLambdaExt.  
-The main difference between them is the naming of the methods.
-
-- LogLambdaExt has a `log_` prefix
-- LambdaExt does not
-
-LambdaExt and LogLambdaExt can be included simultaneously, but in general, including one of them is sufficient.
-
-Which one is better?
-
-Let's try them out to understand the differences and choose the one we prefer.
+#### Mixin
 
 ```ruby
-irb(main):009> include Sinlog::LogLambdaExt
-# It provides log_dbg, log_info, log_warn, log_err, log_fatal, log_unk
-# We can call them using .tap(&log_dbg) or .then(&log_dbg).
-
-irb(main):010> "debug".tap(&log_dbg)
-irb(main):011> "information".tap(&log_info)
-
-# Note: Here we use log_warn, not log_warning
-irb(main):012> "warning".tap(&log_warn)
-
-irb(main):013> "error".tap(&log_err)
-irb(main):014> "fatal".tap(&log_fatal)
-irb(main):015> "unknown".tap(&log_unk)
+require 'sinlog'
+include Sinlog::Loggable
+"Hello".log_info
 ```
 
-```ruby
-# Here is a more complex example
-irb(main):016> require 'pathname'
+#### Refinement
 
-irb(main):017> Pathname('lib/lambda.rb').tap do
-    "Filename: #{it}".then(&log_info)
-    "size: #{
-      it
-        .tap{ '⚠️ Getting file size might fail'.then(&log_warn) }
-        .size
-    }".then(&log_info)
+```ruby
+require 'sinlog'
+using Sinlog::LogExt
+{ dir: "/path/to/xx" }.log_info
+```
+
+## Learn Sinlog API by Example
+
+<img src="../assets/img/preview.png" alt="preview">
+
+```ruby
+require 'sinlog'
+
+class A
+  using Sinlog::LogShortExt
+
+  def self.log
+    'Hello, this is a debug message.'.dbg
+    'Just some info.'.info
+
+    'FBI, open the door!'.warn
+    { error: "IO", type: "InvalidData" }.err
+    'Error occurred, continuing may break things.'.err
+    'Bzzzz... it is bro...ken...nnn~'.fatal
+  end
 end
+
+Sinlog::LV[:info].then do
+  Sinlog.logger_with_level it
+end
+
+A.log
 ```
-
-<img src="../assets/img/LogLambdaExt.jpg" alt="LogLambdaExt" style="width: 90%; height: 90%">
-
-LogLambdaExt provides:
-
-- log_dbg
-- log_info
-- log_warn
-- log_warning (same as log_warn, just a different name)
-- log_wng (same as log_warn, just a different name)
-- log_err
-- log_fatal
-- log_unk
 
 ### Classic Method Call
 
-If you don't like lambdas, you can try the classic method call!
-
-First, run `irb` to enter the Ruby REPL, then follow these steps:
+If you prefer the traditional style (`log.info(msg)` instead of `msg.info`):
 
 ```ruby
-irb(main):001> require 'sinlog'
+require 'sinlog'
 
-irb(main):002> log = Sinlog.instance.logger
+log = Sinlog.logger
 
-irb(main):003> log.debug 'debug'
-irb(main):004> log.info 'information'
-irb(main):005> log.warn 'warning'
-irb(main):006> log.error 'error'
-irb(main):007> log.fatal 'fatal'
-irb(main):008> log.unknown 'unknown'
+log.debug 'debug'
+log.info 'information'
+log.warn 'warning'
+log.error 'error'
+log.fatal 'fatal'
+log.unknown 'unknown'
 ```
 
-Sinlog.instance.logger provides methods from Ruby's standard library logger.
+> The data type of `Sinlog.logger` is Ruby’s standard library `Logger`.
 
-The most common ones are:
+In addition to the common methods listed above, you can also use other methods such as `.reopen`.
+For details, see <https://docs.ruby-lang.org/en/3.4/Logger.html>
 
-- debug
-- info
-- warn
-- error
-- fatal
-- unknown
+  - `debug`
+  - `info`
+  - `warn`
+  - `error`
+  - `fatal`
+  - `unknown`
 
 ## Advanced
 
-After trying it out ourselves, we have a basic understanding of `sinlog`.  
+After trying it out ourselves, we have a basic understanding of `sinlog`.
 In most cases, knowing its basic usage is sufficient.
 
 If you're interested, let's continue exploring together.
@@ -194,7 +200,7 @@ require 'sinlog'
 class EpubProcessor
   def initialize(epub_file, logger = nil)
     @epub = epub_file
-    @logger = logger || Sinlog.instance.tap { it.fetch_env_and_update_log_level("XX_LOG") }.logger
+    @logger = logger || Sinlog.instance.tap { it.set_level_from_env!("XX_LOG") }.logger
     @logger.debug "EpubProcessor class initialization completed."
   end
 end
@@ -222,9 +228,11 @@ p Sinlog::LV
 # => {debug: 0, info: 1, warn: 2, error: 3, fatal: 4, unknown: 5}
 
 # Change the log level to warn
-log = Sinlog.instance.logger.tap { it.level = Sinlog::LV[:warn] }
-# Or:
-# log = Sinlog.instance.logger.tap { it.level = 2 }
+log = Sinlog.logger_with_level(Sinlog::LV[:warn])
+# OR:
+#   log = Sinlog.logger.tap { it.level = Sinlog::LV[:warn] }
+# OR:
+#   log = Sinlog.instance.logger.tap { it.level = 2 }
 
 log.error "This message will be displayed! Lower level WARN (2) will display higher level ERROR (3) logs."
 log.info "This message will not be displayed! Higher level WARN (2) will not display lower level INFO (1) logs."
@@ -236,14 +244,14 @@ log.info "This message will not be displayed! Higher level WARN (2) will not dis
 
 ### Environment Variables
 
-In the real world, for client applications, the end users are typically regular users.  
+In the real world, for client applications, the end users are typically regular users.
 To allow them to configure `log.level` directly, we can use environment variables.
 
 > Using environment variables is simple and efficient.
 
 By default, Sinlog will attempt to read the value of the environment variable `RUBY_LOG`.
 
-It essentially calls the function `fetch_env_and_update_log_level(env_name = 'RUBY_LOG')`.
+It essentially calls the function `set_level_from_env!(env_name = 'RUBY_LOG')`.
 
 - If the environment variable does not exist, it uses `debug(0)`.
 - If the environment variable exists but is empty, it uses `unknown(5)`.
@@ -267,7 +275,7 @@ export XX_CLI_LOG=info
 Ruby:
 
 ```ruby
-logger = Sinlog.instance.tap { it.fetch_env_and_update_log_level("XX_CLI_LOG") }.logger
+logger = Sinlog.instance.tap { it.set_level_from_env!("XX_CLI_LOG") }.logger
 
 logger.debug "This message will not be displayed because the current log level is INFO(1)."
 logger.info "Hello!"
@@ -277,11 +285,11 @@ logger.info "Hello!"
 
 By default, Sinlog outputs to `STDERR`.
 
-If you need to customize the log output path, you can call the logger's `reopen` method.
+If you need to customize the log output path, you can call the Logger's `reopen` method.
 
 ```ruby
 # Logs will be output to the file a.log
-log = Sinlog.instance.logger.tap { it.reopen("a.log") }
+log = Sinlog.logger.tap { it.reopen("a.log") }
 
 log.error "What happened! QuQ"
 ```
@@ -289,7 +297,7 @@ log.error "What happened! QuQ"
 OR:
 
 ```ruby
-log = Sinlog.instance.logger
+log = Sinlog.logger
 log.reopen("a.log")
 
 log.error "What happened! QuQ"
@@ -307,8 +315,26 @@ Modifying Sinlog in class A of the same program will affect Sinlog in class B.
 
 ## Side Note
 
-This is the first Ruby gem I have released.  
+This is the first Ruby gem I have released.
 The API might not fully adhere to idiomatic Ruby usage, so I appreciate your understanding.
+
+## Changelog
+
+### 0.0.3
+
+- `Sinlog.instance.logger` can be simplified => `Sinlog.logger`
+
+- add `Sinlog.logger_with_level`
+  - e.g., `logger = Sinlog.logger_with_level(Sinlog::LV[:warn])`
+  - old: `Sinlog.instance.logger.tap { it.level = Sinlog::LV[:warn] }`
+
+- add `LogExt`, `LogShortExt` and `Loggleable`
+
+- add sorbet **.rbi** files
+
+Breaking changes:
+- `fetch_env_and_update_log_level(ENV_NAME)` => `set_level_from_env!(ENV_NAME)`
+- remove `LogLambdaExt` and related modules
 
 ## License
 

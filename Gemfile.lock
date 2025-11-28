@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sinlog (0.0.3)
+    sinlog (0.0.4)
 
 GEM
   remote: https://rubygems.org/
@@ -20,7 +20,7 @@ GEM
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     logger (1.7.0)
-    minitest (5.26.1)
+    minitest (5.26.2)
     netrc (0.11.0)
     parallel (1.27.0)
     parser (3.3.10.0)
@@ -42,7 +42,7 @@ GEM
     rbs (4.0.0.dev.4)
       logger
       prism (>= 1.3.0)
-    rdoc (6.15.1)
+    rdoc (6.16.1)
       erb
       psych (>= 4.0.0)
       tsort
@@ -81,7 +81,7 @@ GEM
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
       rubocop-ast (>= 1.44.0, < 2.0)
-    ruby-lsp (0.26.3)
+    ruby-lsp (0.26.4)
       language_server-protocol (~> 3.17.0)
       prism (>= 1.2, < 2.0)
       rbs (>= 3, < 5)
@@ -90,14 +90,14 @@ GEM
       racc (~> 1.5)
       sexp_processor (~> 4.16)
     sexp_processor (4.17.4)
-    sorbet (0.6.12768)
-      sorbet-static (= 0.6.12768)
-    sorbet-runtime (0.6.12768)
-    sorbet-static (0.6.12768-x86_64-linux)
-    sorbet-static-and-runtime (0.6.12768)
-      sorbet (= 0.6.12768)
-      sorbet-runtime (= 0.6.12768)
-    spoom (1.7.9)
+    sorbet (0.6.12798)
+      sorbet-static (= 0.6.12798)
+    sorbet-runtime (0.6.12798)
+    sorbet-static (0.6.12798-x86_64-linux)
+    sorbet-static-and-runtime (0.6.12798)
+      sorbet (= 0.6.12798)
+      sorbet-runtime (= 0.6.12798)
+    spoom (1.7.10)
       erubi (>= 1.10.0)
       prism (>= 0.28.0)
       rbi (>= 0.3.3)

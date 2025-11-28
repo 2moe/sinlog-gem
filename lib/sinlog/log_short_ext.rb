@@ -38,44 +38,32 @@ class Sinlog
       def dbg
         Sinlog.logger.debug(self)
       end
-    end
 
-    # Logs the current object at *information* level using Sinlog.logger
-    refine Object do
-      # logger.info
+      # Logs the current object at *information* level using Sinlog.logger
       def info
         Sinlog.logger.info(self)
       end
-    end
 
-    # Logs the current object at *warning* level using Sinlog.logger
-    refine Object do
+      # Logs the current object at *warning* level using Sinlog.logger
       def warn
         Sinlog.logger.warn(self)
       end
-    end
 
-    # Logs the current object at *error* level using Sinlog.logger
-    refine Object do
+      # Logs the current object at *error* level using Sinlog.logger
       def err
         Sinlog.logger.error(self)
       end
-    end
 
-    # Logs the current object at *fatal* level using Sinlog.logger
-    refine Object do
+      # Logs the current object at *fatal* level using Sinlog.logger
       def fatal
         Sinlog.logger.fatal(self)
       end
-    end
 
-    # Logs the current object at *unknown* level using Sinlog.logger
-    refine Object do
+      # Logs the current object at *unknown* level using Sinlog.logger
       def unk
         Sinlog.logger.unknown(self)
       end
+      # -----
     end
-
-    # -----
   end
 end

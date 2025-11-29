@@ -16,12 +16,12 @@ class Sinlog
   #
   #     require 'sinlog'
   #
-  #     include Sinlog::Loggleable
+  #     include Sinlog::Loggable
   #
   #     "A debug message".log_dbg
   #     "Hello, world".log_info
   #
-  module Loggleable
+  module Loggable
     # Logs the current object at *debug* level using Sinlog.logger
     def log_dbg
       Sinlog.logger.debug(self)

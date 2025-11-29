@@ -328,7 +328,7 @@ The API might not fully adhere to idiomatic Ruby usage, so I appreciate your und
   - e.g., `logger = Sinlog.logger_with_level(Sinlog::LV[:warn])`
   - old: `Sinlog.instance.logger.tap { it.level = Sinlog::LV[:warn] }`
 
-- add `LogExt`, `LogShortExt` and `Loggleable`
+- add `LogExt`, `LogShortExt` and `Loggable`
 
 - add sorbet **.rbi** files
 

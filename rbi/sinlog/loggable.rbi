@@ -3,7 +3,7 @@
 # typed: true
 
 class Sinlog
-  module Loggleable
+  module Loggable
     sig { void }
     def log_dbg; end
 

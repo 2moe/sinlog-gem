@@ -148,7 +148,7 @@ include Sinlog::ShortMixin
 
 ## Learn Sinlog API by Example
 
-<img src="../assets/img/preview.png" alt="preview">
+<img src="../assets/img/preview.webp" alt="preview">
 
 ```ruby
 require 'sinlog'
@@ -157,9 +157,9 @@ module A
   module_function
   using Sinlog::ShortRefin
 
-  def self.log
-    [ 'Hello, this is a debug message.',
-      'You might find it a bit verbose, hahaha!' ].dbg
+  def log
+    ['Hey hey hey, could you see this debug message?',
+     'You might find it a bit verbose, hahaha!'].dbg
     'Just some info.'.info
 
     'FBI, open the door!'.warn

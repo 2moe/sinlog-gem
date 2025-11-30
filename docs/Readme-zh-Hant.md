@@ -144,7 +144,7 @@ include Sinlog::ShortMixin
 
 ## Learn Sinlog API By Example
 
-<img src="../assets/img/預覽.png" alt="預覽">
+<img src="../assets/img/預覽.webp" alt="預覽">
 
 ```ruby
 require 'sinlog'
@@ -154,9 +154,9 @@ module A
   using Sinlog::ShortRefin
 
   def log
-    ['您好，我是一條除錯訊息。',
+    ['喂喂喂123，能看到這條除錯訊息嗎？',
     '您可能會覺得我有點囉嗦，哈哈哈！'].dbg
-    '神經，害我笑了一下'.info
+    '神經，害我笑了一下。'.info
 
     '開門！查水錶。'.warn
     { error: "IO", type: "輸入資料無效" }.err

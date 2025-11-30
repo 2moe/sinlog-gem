@@ -25,3 +25,4 @@ bin/tapioca
 !/bin
 !/assets
 !/rbi
+!/.rubocop.yml

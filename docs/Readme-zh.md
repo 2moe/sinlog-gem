@@ -24,14 +24,14 @@
 
 - [快速上手](#快速上手)
 - [安装](#安装)
-  - [对比](#对比)
+  - [Monkey Patching 模块对照表](#monkey-patching-模块对照表)
   - [方法列表](#方法列表)
-    - [Loggable \& LogExt](#loggable--logext)
-    - [LogShortExt](#logshortext)
+    - [Mixin \& Refin](#mixin--refin)
+    - [ShortMixin \& ShortRefin](#shortmixin--shortrefin)
   - [例子](#例子)
     - [经典方法调用 (非 mixin，亦非 refinement)](#经典方法调用-非-mixin亦非-refinement)
-    - [Mixin](#mixin)
     - [Refinement](#refinement)
+    - [Mixin](#mixin)
 - [Learn Sinlog API By Example](#learn-sinlog-api-by-example)
   - [Classic Method Call](#classic-method-call)
 - [进阶](#进阶)
@@ -56,18 +56,18 @@
 gem install sinlog
 ```
 
-### 对比
+### Monkey Patching 模块对照表
 
-| 模块        | 类型       | 方法                                         |
-| ----------- | ---------- | -------------------------------------------- |
-| Loggable    | Mixin      | `log_dbg`, `log_info`, etc.                  |
-| LogExt      | Refinement | `log_dbg`, `log_info`, etc.                  |
-| LogShortExt | Refinement | `dbg`, `info`, `warn`, `err`, `fatal`, `unk` |
-
+| 模块       | Type       | Activation | 方法                                                     |
+| ---------- | ---------- | ---------- | -------------------------------------------------------- |
+| Mixin      | Mixin      | include    | log_dbg, log_info, log_warn, log_err, log_fatal, log_unk |
+| Refin      | Refinement | using      | log_dbg, log_info, log_warn, log_err, log_fatal, log_unk |
+| ShortMixin | Mixin      | include    | dbg, info, warn, err, fatal, unk                         |
+| ShortRefin | Refinement | using      | dbg, info, warn, err, fatal, unk                         |
 
 ### 方法列表
 
-#### Loggable & LogExt
+#### Mixin & Refin
 
 - `log_dbg`   – DEBUG
 - `log_info`  – INFO
@@ -76,14 +76,17 @@ gem install sinlog
 - `log_fatal` – FATAL
 - `log_unk`   – UNKNOWN
 
-#### LogShortExt
+#### ShortMixin & ShortRefin
 
-LogShortExt 类似于 LogExt。
+- ShortRefin 类似于 Refin
+  - 除了方法的命名不同外，二者的内部实现没有任何区别。
+    - Refin 的方法带有 `log_` 前缀
+    - ShortRefin 没有
 
-除了方法的命名不同外，二者的内部实现没有任何区别。
-
-- LogExt 的方法带有 `log_` 前缀
-- LogShortExt 没有
+- ShortMixin 类似于 Mixin
+  - 二者的区别只是命名不同
+    - Mixin 的方法带有 `log_` 前缀
+    - ShortMixin 没有
 
 ---
 
@@ -94,10 +97,10 @@ LogShortExt 类似于 LogExt。
 - `fatal` – FATAL
 - `unk`   – UNKNOWN
 
-> ⚠️ 由于 LogShortExt 带有 warn 方法，因此会覆盖 warn。
-> 对于 ruby 代码中的 `warn "msg"`，您可能需要手动将其修改为 `Kernel.warn "msg"`
+> ⚠️ 由于 ShortMixin & ShortRefin 带有 warn 方法，因此会覆盖 warn。
+> 对于 ruby 代码中的 `warn "msg"` (输出到 stderr 而非输出为日志格式)，您可能需要手动将其修改为 `Kernel.warn "msg"`。
 >
-> 如果介意的话，那就使用 `using Sinlog::LogExt` 而不是 `using Sinlog::LogShortExt`。
+> 如果介意的话，那就使用 `using Sinlog::Refin` 而不是 `using Sinlog::ShortRefin`。
 
 ### 例子
 
@@ -111,19 +114,32 @@ log.info "Information"
 log.debug "This is a debug message"
 ```
 
-#### Mixin
-
-```ruby
-require 'sinlog'
-include Sinlog::Loggable
-"Hello".log_info
-```
 #### Refinement
 
 ```ruby
 require 'sinlog'
-using Sinlog::LogExt
+using Sinlog::Refin
 { dir: "/path/to/xx" }.log_info
+```
+
+```ruby
+require 'sinlog'
+using Sinlog::ShortRefin
+{ dir: "/path/to/xx" }.info
+```
+
+#### Mixin
+
+```ruby
+require 'sinlog'
+include Sinlog::Mixin
+"Hello".log_info
+```
+
+```ruby
+require 'sinlog'
+include Sinlog::ShortMixin
+"Hello".info
 ```
 
 ## Learn Sinlog API By Example
@@ -133,12 +149,13 @@ using Sinlog::LogExt
 ```ruby
 require 'sinlog'
 
-class A
-  using Sinlog::LogShortExt
+module A
+  module_function
+  using Sinlog::ShortRefin
 
-  def self.log
-    '您好，我是一条调试消息。
-    您可能会觉得我有点啰嗦，哈哈哈！'.dbg
+  def log
+    ['您好，我是一条调试消息。',
+    '您可能会觉得我有点啰嗦，哈哈哈！'].dbg
     '神经，害我笑了一下'.info
 
     '开门！查水表。'.warn
@@ -148,10 +165,12 @@ class A
   end
 end
 
-Sinlog::LV[:info].then do
-  Sinlog.logger_with_level it
-end
 
+A.log
+
+# 修改日志级别为 error
+Sinlog.logger(level: 'err')
+Kernel.warn 'Logger.level => error'
 A.log
 ```
 
@@ -162,7 +181,9 @@ A.log
 ```ruby
 require 'sinlog'
 
-log = Sinlog.logger
+ENV["CUSTOM_LOG"] = 'info'
+
+log = Sinlog.logger(env_name: "CUSTOM_LOG")
 
 log.debug 'debug'
 log.info 'information'
@@ -200,7 +221,8 @@ require 'sinlog'
 class EpubProcessor
   def initialize(epub_file, logger = nil)
     @epub = epub_file
-    @logger = logger || Sinlog.instance.tap { it.set_level_from_env!("XX_LOG") }.logger
+    logger ||= Sinlog::logger(env_name: "XX_LOG")
+    @logger = logger
     @logger.debug "EpubProcessor class 初始化完成。"
   end
 end
@@ -223,17 +245,18 @@ end
 - fatal = 4
 - unknown = 5
 
+> 有意思的一点是： ruby 的标准库的 logger 的日志级别与 rust 的 [log::Level](https://docs.rs/log/latest/log/enum.Level.html) 是相反的。
+
 ```ruby
 p Sinlog::LV
 # => {debug: 0, info: 1, warn: 2, error: 3, fatal: 4, unknown: 5}
 
 # 将日志级别修改为 warn
-log = Sinlog.logger_with_level(Sinlog::LV[:warn])
+log = Sinlog.logger(level: 'warn')
 # OR:
-#   log = Sinlog.logger.tap { it.level = Sinlog::LV[:warn] }
+#   log = Sinlog.logger(level: Sinlog::LV[:warn])
 # OR:
-#   log = Sinlog.instance.logger.tap { it.level = 2 }
-
+#   log = Sinlog.logger.tap { it.level = 2 }
 
 log.error "这条消息会显示出来！低级别 WARN（2）会显示高级别 ERROR(3) 的日志。"
 log.info "这条消息不会显示出来！高级别 WARN(2) 不会显示低级别 INFO(1) 的日志。"
@@ -250,13 +273,11 @@ log.info "这条消息不会显示出来！高级别 WARN(2) 不会显示低级�
 
 > 使用环境变量足够简单也足够高效。
 
-Sinlog 在默认情况下，会尝试读取环境变量 RUBY_LOG 的值。
-
-本质上调用了 `set_level_from_env!(env_name = 'RUBY_LOG')` 函数。
+`Sinlog::Logger` 在初始化时，会尝试读取环境变量 `RUBY_LOG` 的值。
 
 - 若该环境变量不存在，则使用 debug(0)。
-- 若该环境变量存在，且其值为空，则使用 unknown(5)。
-- 若该环境变量的值无效，则使用 unknown(5)。
+- 若该环境变量存在，且其值为空，则使用 error(3)。
+- 若该环境变量的值无效，则使用 error(3)。
 
 我们可以用 POSIX-sh 设置环境变量，然后 logger 在初始化的时候，就会自动将日志级别设置为（RUBY_LOG的值）warn。
 
@@ -276,7 +297,7 @@ export XX_CLI_LOG=info
 ruby:
 
 ```ruby
-logger = Sinlog.instance.tap { it.set_level_from_env!("XX_CLI_LOG") }.logger
+logger = Sinlog.logger(env_name:"XX_CLI_LOG")
 
 logger.debug "由于当前日志级别为 INFO(1)，因此不会显示此消息 DEBUG(0)。"
 logger.info "Hello!"
@@ -284,7 +305,7 @@ logger.info "Hello!"
 
 ### 日志输出设备/路径
 
-默认情况下，Sinlog 会输出到 STDERR。
+默认情况下，Sinlog 会输出到 `STDERR`。
 
 您如果需要自定义日志输出路径的话，那可以调用 logger 的 reopen 方法。
 
@@ -310,9 +331,9 @@ log.error "发生甚么事了！QuQ"
 
 ### 注意事项
 
-Sinlog 用的是 Singleton 单例模式，整个程序会共享同一个实例（日志记录器）。
+`Sinlog::Logger` 用的是 Singleton 单例模式，整个程序会共享同一个实例（日志记录器）。
 
-在同一个程序的 class A 中修改 Sinlog 后，会影响到 class B 的 Sinlog。
+在同一个程序的 class A 中修改 `Sinlog.logger` (a.k.a. `Sinlog::Logger.instance.logger`) 后，会影响到 class B 的 Sinlog。
 
 ## 题外话
 

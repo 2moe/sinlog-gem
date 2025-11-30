@@ -333,7 +333,7 @@ log.error "发生甚么事了！QuQ"
 
 `Sinlog::Logger` 用的是 Singleton 单例模式，整个程序会共享同一个实例（日志记录器）。
 
-在同一个程序的 class A 中修改 `Sinlog.logger` (a.k.a. `Sinlog::Logger.instance.logger`) 后，会影响到 class B 的 Sinlog。
+在同一个程序的 class A 中修改 `Sinlog.logger` (a.k.a. `Sinlog::Logger.instance.logger`) 后，会影响到 class B 的 `Sinlog::Logger`。
 
 ## 题外话
 

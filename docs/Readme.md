@@ -101,7 +101,7 @@ gem install sinlog
 - `fatal` – FATAL
 - `unk`   – UNKNOWN
 
-> ⚠️ Since **ShortMixin** and **ShortRefin** include a `warn` method, they will override the default `warn`.
+> ⚠️ Since **ShortMixin** and **ShortRefin** define a `warn` method, they will override the default `warn`.
 > For Ruby code that uses `warn "msg"` (which outputs to **stderr** rather than using a log format), you may need to manually change it to `Kernel.warn "msg"`.
 >
 > If this bothers you, then use `using Sinlog::Refin` instead of `using Sinlog::ShortRefin`.
@@ -280,8 +280,8 @@ To allow them to configure `log.level` directly, we can use environment variable
 By default, `Sinlog::Logger` will attempt to read the value of the environment variable `RUBY_LOG`.
 
 - If the environment variable does not exist, it uses `debug(0)`.
-- If the environment variable exists but is empty, it uses `unknown(5)`.
-- If the environment variable's value is invalid, it uses `unknown(5)`.
+- If the environment variable exists but is empty, it uses `error(3)`.
+- If the environment variable's value is invalid, it uses `error(3)`.
 
 We can set the environment variable using POSIX-sh, and then the logger will automatically set the log level to `warn` (the value of `RUBY_LOG`) during initialization.
 
@@ -337,7 +337,7 @@ In addition to `.reopen` and `.level`, we can also call other methods from Ruby'
 
 `Sinlog::Logger` uses the Singleton pattern, meaning the entire program will share the same instance (logger).
 
-Modifying `Sinlog.logger` (a.k.a. `Sinlog::Logger.instance.logger`) in class A of the same program will affect Sinlog in class B.
+Modifying `Sinlog.logger` (a.k.a. `Sinlog::Logger.instance.logger`) in class A of the same program will affect `Sinlog::Logger` in class B.
 
 ## Side Note
 
@@ -348,11 +348,11 @@ The API might not fully adhere to idiomatic Ruby usage, so I appreciate your und
 
 ### 0.0.3
 
-- `Sinlog::Logger.instance.logger` can be simplified => `Sinlog.logger`
+- `Sinlog.instance.logger` can be simplified => `Sinlog.logger`
 
 - add `Sinlog.logger_with_level`
   - e.g., `logger = Sinlog.logger_with_level(Sinlog::LV[:warn])`
-  - old: `Sinlog::Logger.instance.logger.tap { it.level = Sinlog::LV[:warn] }`
+  - old: `Sinlog.instance.logger.tap { it.level = Sinlog::LV[:warn] }`
 
 - add `LogExt`, `LogShortExt` and `Loggable`
 
@@ -377,6 +377,7 @@ Breaking changes:
 - `Sinlog` class => `Sinlog` module
   - private method: `Sinlog.initialize` => `Sinlog::Logger.initialize`
 - remove `Sinlog.logger_with_level`
+- change the default fallback log level from "unknown(5)" to "error(3)"
 
 ## License
 

@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class Sinlog
-  VERSION = '0.0.5'
+module Sinlog
+  VERSION = '0.0.6'
 end

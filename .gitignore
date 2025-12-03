@@ -1,6 +1,7 @@
 /*
 tmp
-tmp.*
+_tmp.*
+_tmp_*
 
 .directory
 .thumbnails*
@@ -14,15 +15,16 @@ bin/tapioca
 
 # white list
 !/.git*
+!/*.gemspec
 !/Gemfile
 !/Gemfile.lock
 !/License
 !/Rakefile
 !/docs
 !/lib
-!/*.gemspec
 !/test
 !/bin
-!/assets
-!/rbi
+# !/assets
+!/misc
 !/.rubocop.yml
+!/.yardopts

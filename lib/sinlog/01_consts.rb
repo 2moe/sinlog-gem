@@ -12,7 +12,7 @@ module Sinlog
     warn: "\e[33m",    # Yellow
     error: "\e[31m",   # Red
     fatal: "\e[35m",   # Magenta
-    unknown: "\e[0m"   # Reset
+    unknown: "\e[0m", # Reset
   }.freeze
 
   # log levels
@@ -22,6 +22,6 @@ module Sinlog
     warn: StdLogger::WARN,
     error: StdLogger::ERROR,
     fatal: StdLogger::FATAL,
-    unknown: StdLogger::UNKNOWN
+    unknown: StdLogger::UNKNOWN,
   }.freeze
 end

@@ -9,6 +9,7 @@
 
 ---
 
+
 | Language/語言              | ID         |
 | -------------------------- | ---------- |
 | 繁體中文                   | zh-Hant-TW |
@@ -22,18 +23,22 @@
 目錄（點選展開）
 </summary>
 
+- [API DOC](#api-doc)
 - [快速上手](#快速上手)
-- [安裝](#安裝)
-  - [Monkey Patching 模組對照表](#monkey-patching-模組對照表)
+  - [安裝](#安裝)
+  - [API style](#api-style)
+    - [Procedural Style](#procedural-style)
+    - [OOP style](#oop-style)
+    - [FP Style](#fp-style)
+- [Monkey Patching](#monkey-patching)
+  - [對照表](#對照表)
   - [方法列表](#方法列表)
     - [Mixin \& Refin](#mixin--refin)
     - [ShortMixin \& ShortRefin](#shortmixin--shortrefin)
   - [例子](#例子)
-    - [經典方法呼叫 (非 mixin，亦非 refinement)](#經典方法呼叫-非-mixin亦非-refinement)
     - [Refinement](#refinement)
     - [Mixin](#mixin)
 - [Learn Sinlog API By Example](#learn-sinlog-api-by-example)
-  - [Classic Method Call](#classic-method-call)
 - [進階](#進階)
   - [Real World Example](#real-world-example)
   - [日誌級別](#日誌級別)
@@ -46,9 +51,15 @@
 
 </details>
 
+## API DOC
+
+![ClassDiagram](../misc/assets/svg/ClassDiagram.svg)
+
+- Github Pages: <https://2moe.github.io/sinlog-gem>
+
 ## 快速上手
 
-## 安裝
+### 安裝
 
 ```sh
 # POSIX-sh
@@ -56,7 +67,92 @@
 gem install sinlog
 ```
 
-### Monkey Patching 模組對照表
+### API style
+
+在此庫中，一套相似的功能，有多種不同的呼叫方式。
+
+選擇哪種風格，主要取決於您的偏好。
+
+#### Procedural Style
+
+```ruby
+require 'sinlog'
+
+# update the Sinlog logger level
+Sinlog.logger(level: "debug")
+  # OR: Sinlog::Logger.logger("debug")
+
+Sinlog.dbg 'debug'
+Sinlog.info 'information'
+Sinlog.warn 'warning'
+Sinlog.err 'error'
+Sinlog.fatal 'fatal'
+Sinlog.unk 'unknown'
+```
+
+OR：
+
+```sh
+# POSIX-sh
+
+# 設定環境變數
+export YOUR_CUSTOM_LOG=debug
+```
+
+```ruby
+# RUBY
+
+require 'sinlog'
+
+log = Sinlog.logger(env_name: "YOUR_CUSTOM_LOG")
+log.debug "This is a debug message"
+log.info 'information'
+log.warn 'warning'
+log.error 'error'
+log.fatal 'fatal'
+log.unknown 'unknown'
+```
+
+#### OOP style
+
+```ruby
+require 'sinlog'
+
+using Sinlog::Refin
+# OR: include Sinlog::Mixin
+
+'debug'.log_dbg
+'information'.log_info
+'warning'.log_warn
+'error'.log_err
+'fatal'.log_fatal
+'unknown'.log_unk
+```
+
+#### FP Style
+
+```ruby
+require 'sinlog'
+
+# update the Sinlog logger level
+{level: "dbg"}.then { Sinlog.logger **_1 }
+
+Log = Sinlog::Proc
+
+'debug'.tap &Log.dbg
+  # OR: Log.dbg['debug']
+  # OR: Log.dbg.call 'debug'
+  # OR: Log.dbg.('debug')
+
+class Object; def ▷(f) = f.call(self) end
+
+true.▷(Log.dbg >> Log.info >> Log.warn >> Log.err >> Log.fatal >> Log.unk)
+```
+
+
+## Monkey Patching
+
+### 對照表
 
 | 模組       | Type       | Activation | 方法                                                     |
 | ---------- | ---------- | ---------- | -------------------------------------------------------- |
@@ -104,16 +200,6 @@ gem install sinlog
 
 ### 例子
 
-#### 經典方法呼叫 (非 mixin，亦非 refinement)
-
-```ruby
-require 'sinlog'
-
-log = Sinlog.logger
-log.info "Information"
-log.debug "This is a debug message"
-```
-
 #### Refinement
 
 ```ruby
@@ -144,7 +230,7 @@ include Sinlog::ShortMixin
 
 ## Learn Sinlog API By Example
 
-<img src="../assets/img/預覽.webp" alt="預覽">
+<img src="../misc/assets/img/預覽.webp" alt="預覽">
 
 ```ruby
 require 'sinlog'
@@ -173,36 +259,6 @@ Sinlog.logger(level: 'err')
 Kernel.warn 'Logger.level => error'
 A.log
 ```
-
-### Classic Method Call
-
-您如果不喜歡 `msg.info` 這種做法 ，那不妨試試經典的方法呼叫吧！(i.e., `log.info(msg)`)
-
-```ruby
-require 'sinlog'
-
-ENV["CUSTOM_LOG"] = 'info'
-
-log = Sinlog.logger(env_name: "CUSTOM_LOG")
-
-log.debug 'debug'
-log.info 'information'
-log.warn 'warning'
-log.error 'error'
-log.fatal 'fatal'
-log.unknown 'unknown'
-```
-
-> `Sinlog.logger` 的資料型別為 ruby 標準庫的 Logger。
-
-除了以下這些常見的方法外，您還可以使用 `.reopen` 等其他的方法，詳見 <https://docs.ruby-lang.org.cn/en/3.4/Logger.html>
-
-- debug
-- info
-- warn
-- error
-- fatal
-- unknown
 
 ## 進階
 
@@ -307,6 +363,8 @@ logger.info "Hello!"
 
 預設情況下，Sinlog 會輸出到 `STDERR`。
 
+> `Sinlog.logger` 的資料型別為 ruby 標準庫的 Logger。
+
 您如果需要自定義日誌輸出路徑的話，那可以呼叫 logger 的 reopen 方法。
 
 ```ruby
@@ -328,6 +386,8 @@ log.error "發生甚麼事了！QuQ"
 ### 其他 logger 方法
 
 除了 `.reopen`, `.level` 外，我們還可以在 `Sinlog.logger` 上呼叫 ruby 標準庫的 logger 的其他方法。
+
+詳見 <https://docs.ruby-lang.org.cn/en/3.4/Logger.html>
 
 ### 注意事項
 

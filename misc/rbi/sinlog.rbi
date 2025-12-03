@@ -2,7 +2,7 @@
 # rubocop:disable Style/Documentation
 # typed: true
 
-module Sinlog
+module Sinlog # rubocop:disable Style/ClassAndModuleChildren
   class Logger
     include ::Singleton::SingletonInstanceMethods
     include ::Singleton
@@ -85,11 +85,11 @@ module Sinlog
   module_function # rubocop:disable Lint/UselessAccessModifier,Style/ModuleFunction
 
   sig { params(level: LevelType).returns(T.untyped) }
-  def to_log_level(level); end
+  def as_log_level(level); end
 
   sig { returns(Sinlog::Logger) }
   def instance; end
 
-  sig { params(env_name: T.nilable(String), level: LevelType).returns(::Logger) }
-  def logger(env_name: nil, level: nil); end
+  sig { params(level: LevelType, env_name: T.nilable(String)).returns(::Logger) }
+  def logger(level: nil, env_name: nil); end
 end

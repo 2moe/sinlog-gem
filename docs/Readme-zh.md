@@ -22,18 +22,22 @@
 目录（点击展开）
 </summary>
 
+- [API DOC](#api-doc)
 - [快速上手](#快速上手)
-- [安装](#安装)
-  - [Monkey Patching 模块对照表](#monkey-patching-模块对照表)
+  - [安装](#安装)
+  - [API style](#api-style)
+    - [Procedural Style](#procedural-style)
+    - [OOP style](#oop-style)
+    - [FP Style](#fp-style)
+- [Monkey Patching](#monkey-patching)
+  - [对照表](#对照表)
   - [方法列表](#方法列表)
     - [Mixin \& Refin](#mixin--refin)
     - [ShortMixin \& ShortRefin](#shortmixin--shortrefin)
   - [例子](#例子)
-    - [经典方法调用 (非 mixin，亦非 refinement)](#经典方法调用-非-mixin亦非-refinement)
     - [Refinement](#refinement)
     - [Mixin](#mixin)
 - [Learn Sinlog API By Example](#learn-sinlog-api-by-example)
-  - [Classic Method Call](#classic-method-call)
 - [进阶](#进阶)
   - [Real World Example](#real-world-example)
   - [日志级别](#日志级别)
@@ -46,9 +50,15 @@
 
 </details>
 
+## API DOC
+
+![ClassDiagram](../misc/assets/svg/ClassDiagram.svg)
+
+- Github Pages: <https://2moe.github.io/sinlog-gem>
+
 ## 快速上手
 
-## 安装
+### 安装
 
 ```sh
 # POSIX-sh
@@ -56,7 +66,92 @@
 gem install sinlog
 ```
 
-### Monkey Patching 模块对照表
+### API style
+
+在此库中，一套相似的功能，有多种不同的调用方式。
+
+选择哪种风格，主要取决于您的偏好。
+
+#### Procedural Style
+
+```ruby
+require 'sinlog'
+
+# update the Sinlog logger level
+Sinlog.logger(level: "debug")
+  # OR: Sinlog::Logger.logger("debug")
+
+Sinlog.dbg 'debug'
+Sinlog.info 'information'
+Sinlog.warn 'warning'
+Sinlog.err 'error'
+Sinlog.fatal 'fatal'
+Sinlog.unk 'unknown'
+```
+
+OR：
+
+```sh
+# POSIX-sh
+
+# 设置环境变量，YOUR_CUSTOM_LOG 可以改为其他的名称
+export YOUR_CUSTOM_LOG=debug
+```
+
+```ruby
+# RUBY
+
+require 'sinlog'
+
+log = Sinlog.logger(env_name: "YOUR_CUSTOM_LOG")
+log.debug "This is a debug message"
+log.info 'information'
+log.warn 'warning'
+log.error 'error'
+log.fatal 'fatal'
+log.unknown 'unknown'
+```
+
+#### OOP style
+
+```ruby
+require 'sinlog'
+
+using Sinlog::Refin
+# OR: include Sinlog::Mixin
+
+'debug'.log_dbg
+'information'.log_info
+'warning'.log_warn
+'error'.log_err
+'fatal'.log_fatal
+'unknown'.log_unk
+```
+
+#### FP Style
+
+```ruby
+require 'sinlog'
+
+# update the Sinlog logger level
+{level: "dbg"}.then { Sinlog.logger **_1 }
+
+Log = Sinlog::Proc
+
+'debug'.tap &Log.dbg
+  # OR: Log.dbg['debug']
+  # OR: Log.dbg.call 'debug'
+  # OR: Log.dbg.('debug')
+
+class Object; def ▷(f) = f.call(self) end
+
+true.▷(Log.dbg >> Log.info >> Log.warn >> Log.err >> Log.fatal >> Log.unk)
+```
+
+
+## Monkey Patching
+
+### 对照表
 
 | 模块       | Type       | Activation | 方法                                                     |
 | ---------- | ---------- | ---------- | -------------------------------------------------------- |
@@ -104,16 +199,6 @@ gem install sinlog
 
 ### 例子
 
-#### 经典方法调用 (非 mixin，亦非 refinement)
-
-```ruby
-require 'sinlog'
-
-log = Sinlog.logger
-log.info "Information"
-log.debug "This is a debug message"
-```
-
 #### Refinement
 
 ```ruby
@@ -144,7 +229,7 @@ include Sinlog::ShortMixin
 
 ## Learn Sinlog API By Example
 
-<img src="../assets/img/预览.webp" alt="预览">
+<img src="../misc/assets/img/预览.webp" alt="预览">
 
 ```ruby
 require 'sinlog'
@@ -173,36 +258,6 @@ Sinlog.logger(level: 'err')
 Kernel.warn 'Logger.level => error'
 A.log
 ```
-
-### Classic Method Call
-
-您如果不喜欢 `msg.info` 这种做法 ，那不妨试试经典的方法调用吧！(i.e., `log.info(msg)`)
-
-```ruby
-require 'sinlog'
-
-ENV["CUSTOM_LOG"] = 'info'
-
-log = Sinlog.logger(env_name: "CUSTOM_LOG")
-
-log.debug 'debug'
-log.info 'information'
-log.warn 'warning'
-log.error 'error'
-log.fatal 'fatal'
-log.unknown 'unknown'
-```
-
-> `Sinlog.logger` 的数据类型为 ruby 标准库的 Logger。
-
-除了以下这些常见的方法外，您还可以使用 `.reopen` 等其他的方法，详见 <https://docs.ruby-lang.org.cn/en/3.4/Logger.html>
-
-- debug
-- info
-- warn
-- error
-- fatal
-- unknown
 
 ## 进阶
 
@@ -307,6 +362,8 @@ logger.info "Hello!"
 
 默认情况下，Sinlog 会输出到 `STDERR`。
 
+> `Sinlog.logger` 的数据类型为 ruby 标准库的 Logger。
+
 您如果需要自定义日志输出路径的话，那可以调用 logger 的 reopen 方法。
 
 ```ruby
@@ -328,6 +385,8 @@ log.error "发生甚么事了！QuQ"
 ### 其他 logger 方法
 
 除了 `.reopen`, `.level` 外，我们还可以在 `Sinlog.logger` 上调用 ruby 标准库的 logger 的其他方法。
+
+详见 <https://docs.ruby-lang.org.cn/en/3.4/Logger.html>
 
 ### 注意事项
 

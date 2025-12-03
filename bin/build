@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# typed: ignore
+# typed: false
 # frozen_string_literal: true
 
 # -----------------
@@ -7,11 +7,7 @@
 # Description: Build and show gem contents.
 # -----------------
 require 'rubygems'
-require 'pathname'
-
-Pathname(__dir__)
-  .parent
-  .then { Dir.chdir(it) }
+require_relative 'cd_parent_dir'
 
 proj = 'sinlog'
 

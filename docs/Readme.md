@@ -22,18 +22,22 @@ A very, very simple Ruby singleton logger with colored log levels.
 Table of Contents (click to expand)
 </summary>
 
+- [API DOC](#api-doc)
 - [Quick Start](#quick-start)
 - [Installation](#installation)
-  - [Comparison Table (Monkey Patching)](#comparison-table-monkey-patching)
+  - [API Style](#api-style)
+    - [Procedural Style](#procedural-style)
+    - [OOP style](#oop-style)
+    - [FP Style](#fp-style)
+- [Monkey Patching](#monkey-patching)
+  - [Comparison Table](#comparison-table)
   - [Method List](#method-list)
     - [Mixin \& Refin](#mixin--refin)
     - [ShortMixin \& ShortRefin](#shortmixin--shortrefin)
   - [Examples](#examples)
-    - [Classic Method Call (Neither Mixin nor Refinement)](#classic-method-call-neither-mixin-nor-refinement)
     - [Refinement](#refinement)
     - [Mixin](#mixin)
 - [Learn Sinlog API by Example](#learn-sinlog-api-by-example)
-  - [Classic Method Call](#classic-method-call)
 - [Advanced](#advanced)
   - [Real World Example](#real-world-example)
   - [Log Levels](#log-levels)
@@ -43,11 +47,16 @@ Table of Contents (click to expand)
   - [Notes](#notes)
 - [Side Note](#side-note)
 - [Changelog](#changelog)
-  - [0.0.3](#003)
-  - [0.0.6](#006)
+  - [v0.0.7 (2025-12-03)](#v007-2025-12-03)
 - [License](#license)
 
 </details>
+
+## API DOC
+
+![ClassDiagram](../misc/assets/svg/ClassDiagram.svg)
+
+- Github Pages: <https://2moe.github.io/sinlog-gem>
 
 ## Quick Start
 
@@ -59,7 +68,92 @@ Table of Contents (click to expand)
 gem install sinlog
 ```
 
-### Comparison Table (Monkey Patching)
+### API Style
+
+In this library, a set of similar functionalities can be accessed through multiple different calling approaches.
+
+Which style you choose mainly depends on your personal preference.
+
+
+#### Procedural Style
+
+```ruby
+require 'sinlog'
+
+# update the Sinlog logger level
+Sinlog.logger(level: "debug")
+  # OR: Sinlog::Logger.logger("debug")
+
+Sinlog.dbg 'debug'
+Sinlog.info 'information'
+Sinlog.warn 'warning'
+Sinlog.err 'error'
+Sinlog.fatal 'fatal'
+Sinlog.unk 'unknown'
+```
+
+OR：
+
+```sh
+# POSIX-sh
+
+# Set an environment variable for a custom log level
+export YOUR_CUSTOM_LOG=debug
+```
+
+```ruby
+# RUBY
+
+require 'sinlog'
+
+log = Sinlog.logger(env_name: "YOUR_CUSTOM_LOG")
+log.debug "This is a debug message"
+log.info 'information'
+log.warn 'warning'
+log.error 'error'
+log.fatal 'fatal'
+log.unknown 'unknown'
+```
+
+#### OOP style
+
+```ruby
+require 'sinlog'
+
+using Sinlog::Refin
+# OR: include Sinlog::Mixin
+
+'debug'.log_dbg
+'information'.log_info
+'warning'.log_warn
+'error'.log_err
+'fatal'.log_fatal
+'unknown'.log_unk
+```
+
+#### FP Style
+
+```ruby
+require 'sinlog'
+
+# update the Sinlog logger level
+{level: "dbg"}.then { Sinlog.logger **_1 }
+
+Log = Sinlog::Proc
+
+'debug'.tap &Log.dbg
+  # OR: Log.dbg['debug']
+  # OR: Log.dbg.call 'debug'
+  # OR: Log.dbg.('debug')
+
+class Object; def ▷(f) = f.call(self) end
+
+true.▷(Log.dbg >> Log.info >> Log.warn >> Log.err >> Log.fatal >> Log.unk)
+```
+
+## Monkey Patching
+
+### Comparison Table
 
 | Module     | Type       | Activation | Method Naming                                            |
 | ---------- | ---------- | ---------- | -------------------------------------------------------- |
@@ -108,16 +202,6 @@ gem install sinlog
 
 ### Examples
 
-#### Classic Method Call (Neither Mixin nor Refinement)
-
-```ruby
-require 'sinlog'
-
-log = Sinlog.logger
-log.info "Information"
-log.debug "This is a debug message"
-```
-
 #### Refinement
 
 ```ruby
@@ -148,7 +232,7 @@ include Sinlog::ShortMixin
 
 ## Learn Sinlog API by Example
 
-<img src="../assets/img/preview.webp" alt="preview">
+<img src="../misc/assets/img/preview.webp" alt="preview">
 
 ```ruby
 require 'sinlog'
@@ -176,37 +260,6 @@ Sinlog.logger(level: 'err')
 Kernel.warn 'Logger.level => error'
 A.log
 ```
-
-### Classic Method Call
-
-If you prefer the traditional style (`log.info(msg)` instead of `msg.info`):
-
-```ruby
-require 'sinlog'
-
-ENV["CUSTOM_LOG"] = 'info'
-
-log = Sinlog.logger(env_name: "CUSTOM_LOG")
-
-log.debug 'debug'
-log.info 'information'
-log.warn 'warning'
-log.error 'error'
-log.fatal 'fatal'
-log.unknown 'unknown'
-```
-
-> The data type of `Sinlog.logger` is Ruby’s standard library `Logger`.
-
-In addition to the common methods listed above, you can also use other methods such as `.reopen`.
-For details, see <https://docs.ruby-lang.org/en/3.4/Logger.html>
-
-  - `debug`
-  - `info`
-  - `warn`
-  - `error`
-  - `fatal`
-  - `unknown`
 
 ## Advanced
 
@@ -311,7 +364,9 @@ logger.info "Hello!"
 
 By default, Sinlog outputs to `STDERR`.
 
-If you need to customize the log output path, you can call the Logger's `reopen` method.
+> The data type of `Sinlog.logger` is `::Logger` (from Ruby's standard library).
+
+If you need to customize the log output path, you can call the `::Logger`'s `reopen` method.
 
 ```ruby
 # Logs will be output to the file a.log
@@ -333,6 +388,8 @@ log.error "What happened! QuQ"
 
 In addition to `.reopen` and `.level`, we can also call other methods from Ruby's standard library logger on `Sinlog.logger`.
 
+For details, see <https://docs.ruby-lang.org/en/3.4/Logger.html>
+
 ### Notes
 
 `Sinlog::Logger` uses the Singleton pattern, meaning the entire program will share the same instance (logger).
@@ -346,38 +403,32 @@ The API might not fully adhere to idiomatic Ruby usage, so I appreciate your und
 
 ## Changelog
 
-### 0.0.3
+[Earlier versions](./Changelog.md)
 
-- `Sinlog.instance.logger` can be simplified => `Sinlog.logger`
+### v0.0.7 (2025-12-03)
 
-- add `Sinlog.logger_with_level`
-  - e.g., `logger = Sinlog.logger_with_level(Sinlog::LV[:warn])`
-  - old: `Sinlog.instance.logger.tap { it.level = Sinlog::LV[:warn] }`
-
-- add `LogExt`, `LogShortExt` and `Loggable`
-
-- add sorbet **.rbi** files
-
-Breaking changes:
-- `fetch_env_and_update_log_level(ENV_NAME)` => `set_level_from_env!(ENV_NAME)`
-- remove `LogLambdaExt` and related modules
-
-### 0.0.6
-
-- add `Sinlog::ShortMixin` module
-- reimplement `Sinlog.logger` to make the API more user-friendly.
-    - We can now configure the log level via `Sinlog.logger(level: "info", env_name: "CUSTOM_ENV_LOG")`.
-    - **Note:** When both `level` and `env_name` are provided, `level` takes precedence.
+- add `Sinlog::Proc` module
+- add `lib/sinlog/08_module_short_ext.rb`:
+  - `Sinlog.dbg`
+  - `Sinlog.info`
+  - `Sinlog.warn`
+  - `Sinlog.err`
+  - `Sinlog.fatal`
+  - `Sinlog.unk`
+- update `Sinlog::Logger.logger`
+  - Previous: `def self.logger`
+  - Current: `def self.logger(level = nil, env_name = nil)`
 
 Breaking changes:
 
-- `using LogExt` => `using Sinlog::Refin`
-- `using LogShortExt` => `using Sinlog::ShortRefin`
-- `include Loggable` => `include Sinlog::Mixin`
-- `Sinlog` class => `Sinlog` module
-  - private method: `Sinlog.initialize` => `Sinlog::Logger.initialize`
-- remove `Sinlog.logger_with_level`
-- change the default fallback log level from "unknown(5)" to "error(3)"
+- `Sinlog.to_log_level` => `Sinlog.as_log_level`
+- rename `lib/sinlog/*.rb`
+  - consts => 01_consts
+  - logger => 02_logger
+  - module_fn => 03_module_fn
+  - log_ext => 04_log_ext
+  - short_ext => 05_short_ext
+  - loggable => 06_loggable
 
 ## License
 

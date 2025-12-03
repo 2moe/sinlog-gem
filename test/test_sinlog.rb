@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require_relative 'helper/test_helper'
 
 def display_msgs
   log = Sinlog.logger

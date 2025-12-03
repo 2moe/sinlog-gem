@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Module: Sinlog
+  
+    &mdash; Sinlog
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "Sinlog";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index (S)</a> &raquo;
+    
+    
+    <span class="title">Sinlog</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Module: Sinlog
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/sinlog.rb<span class="defines">,<br />
+  lib/sinlog/version.rb,<br /> lib/sinlog/01_consts.rb,<br /> lib/sinlog/02_logger.rb,<br /> lib/sinlog/04_log_ext.rb,<br /> lib/sinlog/06_loggable.rb,<br /> lib/sinlog/03_module_fn.rb,<br /> lib/sinlog/05_short_ext.rb,<br /> lib/sinlog/08_module_short_ext.rb</span>
+</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>Provides a set of reusable <strong>unary functions</strong> that call logging methods.</p>
+
+<ul>
+<li><code>dbg</code>   – DEBUG</li>
+<li><code>info</code>  – INFO</li>
+<li><code>warn</code>  – WARN</li>
+<li><code>err</code>   – ERROR</li>
+<li><code>fatal</code> – FATAL</li>
+<li><code>unk</code>   – UNKNOWN</li>
+</ul>
+
+<hr>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code>
+<span class='const'>Sinlog</span><span class='period'>.</span><span class='id identifier rubyid_dbg'><span class='object_link'><a href="#dbg-class_method" title="Sinlog.dbg (method)">dbg</a></span></span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>debug</span><span class='tstring_end'>&#39;</span></span>
+<span class='const'>Sinlog</span><span class='period'>.</span><span class='id identifier rubyid_info'><span class='object_link'><a href="#info-class_method" title="Sinlog.info (method)">info</a></span></span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>information</span><span class='tstring_end'>&#39;</span></span>
+<span class='const'>Sinlog</span><span class='period'>.</span><span class='id identifier rubyid_warn'><span class='object_link'><a href="#warn-class_method" title="Sinlog.warn (method)">warn</a></span></span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>warning</span><span class='tstring_end'>&#39;</span></span>
+<span class='const'>Sinlog</span><span class='period'>.</span><span class='id identifier rubyid_err'><span class='object_link'><a href="#err-class_method" title="Sinlog.err (method)">err</a></span></span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>error</span><span class='tstring_end'>&#39;</span></span>
+<span class='const'>Sinlog</span><span class='period'>.</span><span class='id identifier rubyid_fatal'><span class='object_link'><a href="#fatal-class_method" title="Sinlog.fatal (method)">fatal</a></span></span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>fatal</span><span class='tstring_end'>&#39;</span></span>
+<span class='const'>Sinlog</span><span class='period'>.</span><span class='id identifier rubyid_unk'><span class='object_link'><a href="#unk-class_method" title="Sinlog.unk (method)">unk</a></span></span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unknown</span><span class='tstring_end'>&#39;</span></span></code></pre>
+    
+  </div>
+
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="Sinlog/Mixin.html" title="Sinlog::Mixin (module)">Mixin</a></span>, <span class='object_link'><a href="Sinlog/Proc.html" title="Sinlog::Proc (module)">Proc</a></span>, <span class='object_link'><a href="Sinlog/Refin.html" title="Sinlog::Refin (module)">Refin</a></span>, <span class='object_link'><a href="Sinlog/ShortMixin.html" title="Sinlog::ShortMixin (module)">ShortMixin</a></span>, <span class='object_link'><a href="Sinlog/ShortRefin.html" title="Sinlog::ShortRefin (module)">ShortRefin</a></span>
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Sinlog/Logger.html" title="Sinlog::Logger (class)">Logger</a></span>
+    
+  
+</p>
+
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="VERSION-constant" class="">VERSION =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0.0.7</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="StdLogger-constant" class="">StdLogger =
+          
+        </dt>
+        <dd><pre class="code"><span class='op'>::</span><span class='const'>Logger</span></pre></dd>
+      
+        <dt id="COLORS-constant" class="">COLORS =
+          <div class="docstring">
+  <div class="discussion">
+    <p>Define colors for different log levels</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+  <span class='label'>debug:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\e[34m</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>   <span class='comment'># Blue
+</span>  <span class='label'>info:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\e[36m</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>    <span class='comment'># Cyan
+</span>  <span class='label'>warn:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\e[33m</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>    <span class='comment'># Yellow
+</span>  <span class='label'>error:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\e[31m</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>   <span class='comment'># Red
+</span>  <span class='label'>fatal:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\e[35m</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>   <span class='comment'># Magenta
+</span>  <span class='label'>unknown:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\e[0m</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='comment'># Reset
+</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      
+        <dt id="LV-constant" class="">LV =
+          <div class="docstring">
+  <div class="discussion">
+    <p>log levels</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+  <span class='label'>debug:</span> <span class='const'><span class='object_link'><a href="#StdLogger-constant" title="Sinlog::StdLogger (constant)">StdLogger</a></span></span><span class='op'>::</span><span class='const'>DEBUG</span><span class='comma'>,</span>
+  <span class='label'>info:</span> <span class='const'><span class='object_link'><a href="#StdLogger-constant" title="Sinlog::StdLogger (constant)">StdLogger</a></span></span><span class='op'>::</span><span class='const'>INFO</span><span class='comma'>,</span>
+  <span class='label'>warn:</span> <span class='const'><span class='object_link'><a href="#StdLogger-constant" title="Sinlog::StdLogger (constant)">StdLogger</a></span></span><span class='op'>::</span><span class='const'>WARN</span><span class='comma'>,</span>
+  <span class='label'>error:</span> <span class='const'><span class='object_link'><a href="#StdLogger-constant" title="Sinlog::StdLogger (constant)">StdLogger</a></span></span><span class='op'>::</span><span class='const'>ERROR</span><span class='comma'>,</span>
+  <span class='label'>fatal:</span> <span class='const'><span class='object_link'><a href="#StdLogger-constant" title="Sinlog::StdLogger (constant)">StdLogger</a></span></span><span class='op'>::</span><span class='const'>FATAL</span><span class='comma'>,</span>
+  <span class='label'>unknown:</span> <span class='const'><span class='object_link'><a href="#StdLogger-constant" title="Sinlog::StdLogger (constant)">StdLogger</a></span></span><span class='op'>::</span><span class='const'>UNKNOWN</span><span class='comma'>,</span>
+<span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#as_log_level-class_method" title="as_log_level (class method)">.<strong>as_log_level</strong>(level = nil)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>The log level as an integer.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dbg-class_method" title="dbg (class method)">.<strong>dbg</strong>(obj)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#err-class_method" title="err (class method)">.<strong>err</strong>(obj)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#fatal-class_method" title="fatal (class method)">.<strong>fatal</strong>(obj)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#info-class_method" title="info (class method)">.<strong>info</strong>(obj)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#instance-class_method" title="instance (class method)">.<strong>instance</strong>  &#x21d2; &lt;Sinlog::Logger&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p><code>=&gt; Sinlog::Logger.instance</code>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#logger-class_method" title="logger (class method)">.<strong>logger</strong>(level: nil, env_name: nil)  &#x21d2; StdLogger </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Configures and returns the <code>Sinlog.instance.logger</code>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#unk-class_method" title="unk (class method)">.<strong>unk</strong>(obj)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#warn-class_method" title="warn (class method)">.<strong>warn</strong>(obj)  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="as_log_level-class_method">
+  
+    .<strong>as_log_level</strong>(level = nil)  &#x21d2; <tt>Integer</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'><p>If <code>level</code> is <code>nil</code>, returns <code>Sinlog.logger.level</code>.</p>
+</div>
+  </div>
+
+<p>Returns the log level as an integer.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>sinlog</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='comment'># optional values:
+</span><span class='comment'>#    &#39;debug&#39;, &#39;info&#39;, &#39;warn&#39;, &#39;error&#39;, &#39;fatal&#39;, &#39;unknown&#39;,
+</span><span class='comment'>#    &#39;dbg&#39;, &#39;information&#39;, &#39;warning&#39;, &#39;err&#39;, &#39;unk&#39;,
+</span><span class='comment'>#    &#39;0&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;
+</span>
+<span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_as_log_level'>as_log_level</span><span class='lparen'>(</span><span class='symbol'>:dbg</span><span class='rparen'>)</span> <span class='comment'>#=&gt; LV[:debug] =&gt; 0
+</span><span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_as_log_level'>as_log_level</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>info</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'>#=&gt; LV[:info] =&gt; 1</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>level</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>String</tt>, <tt>Symbol</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Log Level.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the log level as an integer.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sinlog/03_module_fn.rb', line 23</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_as_log_level'>as_log_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span> <span class='comment'># rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength
+</span>  <span class='id identifier rubyid_level'>level</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_logger'><span class='object_link'><a href="#logger-class_method" title="Sinlog.logger (method)">logger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='kw'>if</span> <span class='id identifier rubyid_level'>level</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_level'>level</span>
+    <span class='kw'>when</span> <span class='int'>0</span><span class='op'>..</span><span class='int'>5</span>
+      <span class='id identifier rubyid_level'>level</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>0</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>2</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>3</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>4</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>5</span><span class='tstring_end'>&#39;</span></span>
+      <span class='id identifier rubyid_level'>level</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>debug</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>dbg</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:dbg</span>
+      <span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:debug</span><span class='rbracket'>]</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>info</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>information</span><span class='tstring_end'>&#39;</span></span>
+      <span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:info</span><span class='rbracket'>]</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>warn</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>warning</span><span class='tstring_end'>&#39;</span></span>
+      <span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:warn</span><span class='rbracket'>]</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>err</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>error</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:err</span>
+      <span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>fatal</span><span class='tstring_end'>&#39;</span></span>
+      <span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:fatal</span><span class='rbracket'>]</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unk</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>unknown</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='symbol'>:unk</span>
+      <span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:unknown</span><span class='rbracket'>]</span>
+    <span class='kw'>when</span> <span class='const'>Symbol</span>
+      <span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dbg-class_method">
+  
+    .<strong>dbg</strong>(obj)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+        <h5 class="example_title"><div class='inline'><p>Basic usage</p>
+</div></h5>
+      
+      <pre class="example code"><code>
+<span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_dbg'>dbg</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>This is a debug message</span><span class='tstring_end'>&quot;</span></span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sinlog/08_module_short_ext.rb', line 36</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dbg'>dbg</span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_log_dbg'>log_dbg</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="err-class_method">
+  
+    .<strong>err</strong>(obj)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code>
+<span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_err'>err</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Error message</span><span class='tstring_end'>&quot;</span></span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+66
+67
+68</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sinlog/08_module_short_ext.rb', line 66</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_err'>err</span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_log_err'>log_err</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="fatal-class_method">
+  
+    .<strong>fatal</strong>(obj)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code>
+<span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_fatal'>fatal</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Fatal Error message</span><span class='tstring_end'>&quot;</span></span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+76
+77
+78</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sinlog/08_module_short_ext.rb', line 76</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_fatal'>fatal</span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_log_fatal'>log_fatal</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="info-class_method">
+  
+    .<strong>info</strong>(obj)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code>
+<span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_info'>info</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>info message</span><span class='tstring_end'>&quot;</span></span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+46
+47
+48</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sinlog/08_module_short_ext.rb', line 46</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_info'>info</span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_log_info'>log_info</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="instance-class_method">
+  
+    .<strong>instance</strong>  &#x21d2; <tt>&lt;<span class='object_link'><a href="Sinlog/Logger.html" title="Sinlog::Logger (class)">Sinlog::Logger</a></span>&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns <code>=&gt; Sinlog::Logger.instance</code>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>&lt;<span class='object_link'><a href="Sinlog/Logger.html" title="Sinlog::Logger (class)">Sinlog::Logger</a></span>&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p><code>=&gt; Sinlog::Logger.instance</code></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+50
+51
+52</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sinlog/03_module_fn.rb', line 50</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_instance'>instance</span>
+  <span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Sinlog/Logger.html" title="Sinlog::Logger (class)">Logger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_instance'>instance</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="logger-class_method">
+  
+    .<strong>logger</strong>(level: nil, env_name: nil)  &#x21d2; <tt><span class='object_link'><a href="#StdLogger-constant" title="Sinlog::StdLogger (constant)">StdLogger</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Configures and returns the <code>Sinlog.instance.logger</code>.</p>
+
+<h2 id="english">English</h2>
+
+<p>You can configure the log level through parameters.</p>
+
+<ul>
+<li><p>env_name</p>
+
+<ul>
+<li>Specifies the name of an environment variable.</li>
+<li>If set to nil, the program will attempt to read <code>RUBY_LOG</code> and set the log level accordingly.</li>
+<li>Example: logger(env_name: nil)
+
+<ul>
+<li>If the user runs <code>RUBY_LOG=debug ./[your-script].rb</code></li>
+<li>The log level will be set to <code>debug</code>.</li>
+</ul></li>
+<li>Example: logger(env_name: &quot;XX_CLI_LOG&quot;)
+
+<ul>
+<li>If the user runs <code>XX_CLI_LOG=warn ./[your-script].rb</code></li>
+<li>The log level will be set to <code>warn</code>.</li>
+</ul></li>
+</ul></li>
+<li><p>level</p>
+
+<ul>
+<li>The level parameter takes precedence over env_name.</li>
+<li>If both level and env_name are provided, the program will parse level first and return early.</li>
+</ul></li>
+</ul>
+
+<h2 id="part-654291b94b1">中文</h2>
+
+<p>配置并获取 <code>Sinlog.instance.logger</code>。</p>
+
+<p>我们可以通过参数来配置日志级别。</p>
+
+<ul>
+<li>env_name
+
+<ul>
+<li>指定特定的环境变量名称</li>
+<li>当其为 nil 时，程序默认会尝试获取 RUBY_LOG 的值，并设置日志级别。</li>
+<li>假设 logger(env_name: nil)
+
+<ul>
+<li>若用户调用 <code>RUBY_LOG=debug ./[your-script].rb</code></li>
+<li>则日志级别为 debug</li>
+</ul></li>
+<li>假设 logger(env_name: &quot;XX_CLI_LOG&quot;)
+
+<ul>
+<li>若用户调用 <code>XX_CLI_LOG=warn ./[your-script].rb</code></li>
+<li>则日志级别为 warn</li>
+</ul></li>
+</ul></li>
+<li>level
+
+<ul>
+<li>level 的优先级要高于 env_name</li>
+<li>若 level 和 env_name 都不为 nil, 则程序会优先解析 level，并提前 return。</li>
+</ul></li>
+</ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code>
+<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>sinlog</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='comment'># optional level values:
+</span><span class='comment'>#   - &quot;debug&quot;
+</span><span class='comment'>#   - &quot;dbg&quot;
+</span><span class='comment'>#   - &quot;info&quot;
+</span><span class='comment'>#   - &quot;warn&quot;
+</span><span class='comment'>#   - &quot;error&quot;
+</span><span class='comment'>#   - &quot;err&quot;
+</span><span class='comment'>#   - &quot;fatal&quot;
+</span><span class='comment'>#   - &quot;unknown&quot;
+</span><span class='comment'>#   - &quot;unk&quot;
+</span><span class='comment'>#   - Integer (e.g., Sinlog::LV[:debug])
+</span>
+<span class='id identifier rubyid_log'>log</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span><span class='lparen'>(</span><span class='label'>level:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>dbg</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_log'>log</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='op'>==</span> <span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:debug</span><span class='rbracket'>]</span>  <span class='comment'>#=&gt; true
+</span><span class='id identifier rubyid_a'>a</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Foo</span><span class='tstring_end'>&quot;</span></span>
+<span class='id identifier rubyid_log'>log</span><span class='period'>.</span><span class='id identifier rubyid_debug'>debug</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>a=</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_a'>a</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+
+<span class='id identifier rubyid_using'>using</span> <span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Sinlog/Refin.html" title="Sinlog::Refin (module)">Refin</a></span></span>
+<span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span><span class='lparen'>(</span><span class='label'>level:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>warn</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_log'>log</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='op'>==</span> <span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:warn</span><span class='rbracket'>]</span>  <span class='comment'>#=&gt; true
+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Bar</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_log_warn'>log_warn</span>
+
+<span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>CUSTOM_LOG</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>info</span><span class='tstring_end'>&#39;</span></span>
+<span class='id identifier rubyid_log'>log</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span><span class='lparen'>(</span><span class='label'>env_name:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>CUSTOM_LOG</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_log'>log</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='op'>==</span> <span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:info</span><span class='rbracket'>]</span>  <span class='comment'>#=&gt; true
+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Baz</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_log_info'>log_info</span>
+
+<span class='id identifier rubyid_log'>log</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span><span class='lparen'>(</span><span class='label'>level:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>error</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>env_name:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>CUSTOM_LOG</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_log'>log</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='op'>==</span> <span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="#LV-constant" title="Sinlog::LV (constant)">LV</a></span></span><span class='lbracket'>[</span><span class='symbol'>:error</span><span class='rbracket'>]</span>  <span class='comment'>#=&gt; true
+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>foobar</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_log_err'>log_err</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>level</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>String</tt>, <tt>Symbol</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Log Level.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>env_name</span>
+      
+      
+        <span class='type'>(<tt>#to_s</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'><p>Name of the environment variable.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="#StdLogger-constant" title="Sinlog::StdLogger (constant)">StdLogger</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="Sinlog/Logger.html#logger-class_method" title="Sinlog::Logger.logger (method)">Sinlog::Logger.logger</a></span></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sinlog/03_module_fn.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_logger'>logger</span><span class='lparen'>(</span><span class='label'>level:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>env_name:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_std_logger'>std_logger</span> <span class='op'>=</span> <span class='id identifier rubyid_instance'>instance</span><span class='period'>.</span><span class='id identifier rubyid_logger'>logger</span>
+
+  <span class='comment'># if level != nil
+</span>  <span class='kw'>return</span> <span class='id identifier rubyid_std_logger'>std_logger</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='lbrace'>{</span> <span class='id identifier rubyid__1'>_1</span><span class='period'>.</span><span class='id identifier rubyid_level'>level</span> <span class='op'>=</span> <span class='id identifier rubyid_as_log_level'>as_log_level</span><span class='lparen'>(</span><span class='id identifier rubyid_level'>level</span><span class='rparen'>)</span> <span class='rbrace'>}</span> <span class='kw'>unless</span> <span class='id identifier rubyid_level'>level</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+
+  <span class='comment'># if env_name != nil
+</span>  <span class='id identifier rubyid_instance'>instance</span><span class='period'>.</span><span class='id identifier rubyid_set_level_from_env!'>set_level_from_env!</span><span class='lparen'>(</span><span class='id identifier rubyid_env_name'>env_name</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_env_name'>env_name</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+
+  <span class='id identifier rubyid_std_logger'>std_logger</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="unk-class_method">
+  
+    .<strong>unk</strong>(obj)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code>
+<span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_unk'>unk</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unknown Level</span><span class='tstring_end'>&quot;</span></span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+86
+87
+88</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sinlog/08_module_short_ext.rb', line 86</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_unk'>unk</span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_log_unk'>log_unk</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="warn-class_method">
+  
+    .<strong>warn</strong>(obj)  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code>
+<span class='const'><span class='object_link'><a href="" title="Sinlog (module)">Sinlog</a></span></span><span class='period'>.</span><span class='id identifier rubyid_warn'>warn</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>warning message</span><span class='tstring_end'>&quot;</span></span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>obj</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56
+57
+58</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sinlog/08_module_short_ext.rb', line 56</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_warn'>warn</span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_log_warn'>log_warn</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Wed Dec  3 07:45:24 2025 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.37 (ruby-4.0.0).
+</div>
+
+    </div>
+  </body>
+</html>

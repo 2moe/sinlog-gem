@@ -22,7 +22,7 @@ using Sinlog::Refin
 using Cinnabar::Command::ArrRefin
 
 -> {
-  local_ipv4_nat = Socket.getifaddrs
+  ipv4_lan_addrs = Socket.getifaddrs
     .filter { |ifa| ifa.addr&.ipv4? }
     .map    { |ifa| ifa.addr.ip_address }
     .reject { |ip| ip.start_with?('127.') }
@@ -30,7 +30,7 @@ using Cinnabar::Command::ArrRefin
   green = "\e[32m"
   magenta = "\e[35m"
   reset = "\e[0m"
-  "#{green}http://#{local_ipv4_nat.first}#{magenta}:8808#{reset}".log_info
+  "#{green}http://#{ipv4_lan_addrs.first}#{magenta}:8808#{reset}".log_info
 }.call
 
 system 'yardoc'

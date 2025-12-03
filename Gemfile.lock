@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sinlog (0.0.6)
+    sinlog (0.0.7)
 
 GEM
   remote: https://rubygems.org/

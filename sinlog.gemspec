@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.homepage = 'https://github.com/2moe/sinlog-gem'
   spec.metadata['homepage_uri'] = spec.homepage
+  spec.metadata['documentation_uri'] = 'https://2moe.github.io/sinlog-gem/'
   # spec.metadata['source_code_uri'] = spec.homepage
   # spec.metadata['changelog_uri'] = "TODO: Put your gem's CHANGELOG.md URL here."
 
@@ -42,4 +43,5 @@ Gem::Specification.new do |spec|
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
+  # https://guides.rubygems.org/specification-reference/
 end

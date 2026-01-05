@@ -29,4 +29,4 @@ jobs:
       # - name: install deps
       #   run: bundle install
       - name: Ruby MiniTest
-        run: rake test
+        run: ./bin/test.take test

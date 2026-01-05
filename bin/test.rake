@@ -1,7 +1,9 @@
-#!/usr/bin/env rake
+#!/usr/bin/env -S rake -f
 # frozen_string_literal: true
 
 # Usage:
+#
+#  gem install rake minitest
 #
 # - show all tasks:
 #     ./test.rake --tasks

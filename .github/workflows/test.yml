@@ -22,9 +22,8 @@ jobs:
           # bundler-cache: true
 
       - uses: actions/checkout@v6
-
       - run: tree
       # - name: install deps
       #   run: bundle install
-      # - name: Ruby MiniTest
-      #   run: bin/test.take test
+      - name: Ruby MiniTest
+        run: rake -f bin/test.take

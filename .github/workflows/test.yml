@@ -7,26 +7,23 @@ on:
     # pull_request:
     paths:
       - '*.gemspec'
-      - '.github/workflows/main.yml'
+      - '.github/workflows/test.yml'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     name: Ruby MiniTest
-    # strategy:
-    #   matrix:
-    #     ruby:
-    #       - '3.4.1'
 
     steps:
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          # bundler-cache: true
+
       - uses: actions/checkout@v6
-      # - name: Set up Ruby
-      #   uses: ruby/setup-ruby@v1
-      #   with:
-      #     ruby-version: ${{ matrix.ruby }}
-      #     bundler-cache: true
 
       # - name: install deps
       #   run: bundle install
       - name: Ruby MiniTest
-        run: ./bin/test.take test
+        run: bin/test.take test

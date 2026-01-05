@@ -15,14 +15,15 @@ jobs:
     name: Ruby MiniTest
 
     steps:
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1'
-          # bundler-cache: true
+      # - name: Set up Ruby
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: '3.1'
+      #     # bundler-cache: true
 
       - uses: actions/checkout@v6
       - run: tree
+      - run: gem install rake minitest
       # - name: install deps
       #   run: bundle install
       - name: Ruby MiniTest

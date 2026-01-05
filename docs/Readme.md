@@ -405,6 +405,11 @@ The API might not fully adhere to idiomatic Ruby usage, so I appreciate your und
 
 [Earlier versions](./Changelog.md)
 
+### v0.0.8 (2026-01-05)
+
+- fix ruby v4.0.0 compatibility
+  - `spec.add_dependency 'logger', "~> 1"`
+
 ### v0.0.7 (2025-12-03)
 
 - add `Sinlog::Proc` module

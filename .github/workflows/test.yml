@@ -23,7 +23,7 @@ jobs:
 
       - uses: actions/checkout@v6
       - run: tree
-      - run: gem install rake minitest
+      # - run: gem install rake minitest
       # - name: install deps
       #   run: bundle install
       - name: Ruby MiniTest

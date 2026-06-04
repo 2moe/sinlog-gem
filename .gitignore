@@ -17,7 +17,6 @@ bin/tapioca
 !/.git*
 !/*.gemspec
 !/Gemfile
-!/Gemfile.lock
 !/License
 !/Rakefile
 !/docs
